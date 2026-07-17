@@ -1,0 +1,66 @@
+{
+  "name": "holdfast-os",
+  "version": "2.0.1",
+  "description": "A local book production machine for planning, drafting, revising, and exporting novels.",
+  "main": "electron-main.js",
+  "scripts": {
+    "start": "node server.js",
+    "mcp": "node mcp-server.js",
+    "desktop": "electron .",
+    "build:win": "electron-builder --win nsis portable",
+    "build:installer": "electron-builder --win nsis",
+    "build:dir": "electron-builder --dir"
+  },
+  "build": {
+    "appId": "com.bookmachine.os",
+    "productName": "Book Machine OS",
+    "asar": true,
+    "files": [
+      "electron-main.js",
+      "mcp-server.js",
+      "server.js",
+      "package.json",
+      "build/icon.ico",
+      "public/**/*",
+      "config/holdfast.env",
+      "config/holdfast.env.example"
+    ],
+    "extraResources": [
+      {
+        "from": "config/holdfast.env",
+        "to": "config/holdfast.env"
+      },
+      {
+        "from": "mcp-server.js",
+        "to": "mcp-server.js"
+      },
+      {
+        "from": "build/icon.ico",
+        "to": "build/icon.ico"
+      }
+    ],
+    "win": {
+      "icon": "build/icon.ico",
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    },
+    "nsis": {
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico",
+      "installerHeaderIcon": "build/icon.ico",
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Book Machine OS",
+      "artifactName": "Book-Machine-OS-Setup-${version}.${ext}"
+    }
+  },
+  "devDependencies": {
+    "electron": "^33.4.11",
+    "electron-builder": "^25.1.8"
+  }
+}

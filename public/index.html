@@ -1,0 +1,1564 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Book Machine OS</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f4f1ec;color:#171513;height:100vh;overflow:hidden}button,input,textarea,select{font:inherit}button{cursor:pointer}.app{height:100vh;display:grid;grid-template-columns:260px 1fr}.side{background:#272521;color:#f7f3ea;display:flex;flex-direction:column;min-width:0}.brand{height:64px;display:flex;align-items:center;padding:0 18px;border-bottom:1px solid rgba(255,255,255,.12)}.brand h1{font-size:15px;line-height:1.2;margin:0;font-weight:750}.brand span{display:block;color:#bfb5a6;font-size:12px;font-weight:500;margin-top:2px}.side-scroll{padding:14px;overflow:auto;flex:1}.label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#bfb5a6;margin:16px 0 8px}.project{width:100%;border:1px solid transparent;background:transparent;color:#f7f3ea;border-radius:8px;text-align:left;padding:10px 10px;margin-bottom:6px}.project:hover,.project.active{background:#38352f;border-color:#504c43}.project strong{display:block;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.project span{font-size:12px;color:#bfb5a6}.nav{display:grid;grid-template-columns:1fr 1fr;gap:7px}.nav button,.ghost,.primary,.iconbtn{border:1px solid #d4cbbd;background:#fffaf2;color:#171513;border-radius:7px;padding:8px 10px}.nav button{background:#38352f;color:#f7f3ea;border-color:#504c43}.nav button.active{background:#c77b3a;color:#1f130a;border-color:#e2a266;font-weight:700}.ghost:hover,.primary:hover,.iconbtn:hover{filter:brightness(.97)}.primary{background:#171513;color:#fffaf2;border-color:#171513}.main{min-width:0;display:flex;flex-direction:column}.top{height:64px;background:#fffaf2;border-bottom:1px solid #ded6ca;display:flex;align-items:center;padding:0 22px;gap:12px}.top-title{min-width:0}.top-title strong{display:block;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.top-title span{font-size:12px;color:#71695f}.top-actions{margin-left:auto;display:flex;gap:8px;align-items:center}.search{width:240px;border:1px solid #d4cbbd;border-radius:7px;padding:8px 10px;background:white}.content{flex:1;overflow:hidden}.view{display:none;height:100%;overflow:auto;padding:22px}.view.active{display:block}.grid{display:grid;gap:14px}.dash-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.card{background:#fffaf2;border:1px solid #ded6ca;border-radius:8px;padding:16px}.metric .k{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:#71695f}.metric .v{font-size:26px;font-weight:780;margin-top:6px}.metric .s{font-size:12px;color:#71695f;margin-top:3px}.bar{height:8px;border-radius:99px;background:#e3dbcf;overflow:hidden}.fill{height:100%;background:#2f7d64;width:0}.columns{display:grid;grid-template-columns:repeat(5,minmax(170px,1fr));gap:10px;min-height:520px}.col{background:#ece5db;border:1px solid #ded6ca;border-radius:8px;padding:10px}.col h3{font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:#625b52;margin:0 0 10px;display:flex;justify-content:space-between}.chapter{background:#fffaf2;border:1px solid #ded6ca;border-left:4px solid #8b8173;border-radius:7px;padding:10px;margin-bottom:8px}.chapter[data-stage=drafting]{border-left-color:#4879ad}.chapter[data-stage=self-edit]{border-left-color:#8265a7}.chapter[data-stage=review]{border-left-color:#c77b3a}.chapter[data-stage=final]{border-left-color:#2f7d64}.chapter strong{font-size:13px;display:block}.chapter p{font-size:12px;color:#625b52;margin:4px 0 8px;line-height:1.35}.stage-row{display:flex;gap:4px;flex-wrap:wrap}.stage-row button{border:1px solid #d4cbbd;background:white;border-radius:5px;padding:4px 6px;font-size:11px}.stage-row button.on{background:#171513;color:#fffaf2;border-color:#171513}.editor{height:calc(100vh - 108px);display:grid;grid-template-columns:250px 1fr;border:1px solid #ded6ca;background:#fffaf2;border-radius:8px;overflow:hidden}.files{border-right:1px solid #ded6ca;overflow:auto;background:#f3ece2}.file-group{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:#71695f;padding:14px 12px 6px}.file{display:block;width:100%;border:0;background:transparent;text-align:left;padding:8px 12px;color:#272521}.file:hover,.file.active{background:#e7ded2}.edit-pane{display:flex;flex-direction:column;min-width:0}.toolbar{height:46px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #ded6ca;padding:0 12px;background:#fbf5ec}.toolbar .name{font-weight:700;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}.textarea{flex:1;border:0;resize:none;padding:34px 58px;background:#fffaf2;color:#171513;font:17px/1.75 Georgia,"Times New Roman",serif;outline:0}.foot{height:36px;border-top:1px solid #ded6ca;display:flex;gap:16px;align-items:center;padding:0 12px;font-size:12px;color:#71695f}.split{display:grid;grid-template-columns:minmax(320px,1fr) minmax(320px,1fr);gap:14px}.field{display:grid;gap:6px;margin-bottom:12px}.field span{font-size:12px;color:#625b52;font-weight:650}.field input,.field textarea,.field select{border:1px solid #d4cbbd;border-radius:7px;padding:9px 10px;background:white}.field textarea{min-height:130px;resize:vertical}.log{width:100%;border-collapse:collapse;background:#fffaf2;border:1px solid #ded6ca;border-radius:8px;overflow:hidden}.log th,.log td{text-align:left;border-bottom:1px solid #e6ded3;padding:10px 12px;font-size:13px}.log th{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:#71695f;background:#f3ece2}.flag{display:flex;gap:10px;align-items:flex-start;border-bottom:1px solid #e6ded3;padding:10px 0}.flag button{margin-left:auto}.empty{color:#71695f;font-size:13px;padding:18px}.results button{display:block;width:100%;text-align:left;border:1px solid #ded6ca;background:#fffaf2;border-radius:7px;padding:10px;margin-bottom:8px}.results small{color:#71695f}.bible-list{max-height:520px;overflow:auto}.bible-item{border-bottom:1px solid #e6ded3;padding:9px 0}.bible-item strong{font-size:13px}.bible-item small{display:block;color:#71695f;margin-top:2px}.packet-box{width:100%;min-height:360px;border:1px solid #d4cbbd;border-radius:7px;background:white;padding:12px;font:13px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;resize:vertical}.rule-file{border-bottom:1px solid #e6ded3;padding:10px 0}.rule-hit{display:inline-block;border:1px solid #d4cbbd;border-radius:99px;padding:3px 7px;margin:3px;font-size:12px;background:white}.gate-wrap{overflow:auto;border:1px solid #ded6ca;border-radius:8px;background:#fffaf2}.gate-table{width:100%;border-collapse:collapse;min-width:900px}.gate-table th,.gate-table td{border-bottom:1px solid #e6ded3;border-right:1px solid #e6ded3;padding:8px;text-align:center;font-size:12px}.gate-table th{position:sticky;top:0;background:#f3ece2;color:#625b52;text-transform:uppercase;letter-spacing:.05em}.gate-table td:first-child,.gate-table th:first-child{text-align:left;position:sticky;left:0;background:#fffaf2;z-index:1}.gate-table th:first-child{background:#f3ece2;z-index:2}.gate-btn{width:28px;height:28px;border-radius:6px;border:1px solid #d4cbbd;background:white}.gate-btn.on{background:#2f7d64;border-color:#2f7d64;color:white}.modal{position:fixed;inset:0;background:rgba(23,21,19,.45);display:none;align-items:center;justify-content:center;padding:20px}.modal.open{display:flex}.dialog{width:min(560px,100%);background:#fffaf2;border-radius:8px;border:1px solid #ded6ca;padding:18px}.dialog h2{margin:0 0 12px;font-size:18px}.toast{position:fixed;right:18px;bottom:18px;background:#171513;color:#fffaf2;border-radius:7px;padding:10px 12px;font-size:13px;display:none}@media(max-width:950px){.app{grid-template-columns:1fr}.side{display:none}.dash-grid,.split{grid-template-columns:1fr}.columns{grid-template-columns:1fr}.editor{grid-template-columns:1fr;height:auto}.files{max-height:220px;border-right:0;border-bottom:1px solid #ded6ca}.textarea{min-height:460px;padding:24px}.search{width:150px}}
+</style>
+<style>
+.editor-work{flex:1;display:flex;overflow:auto;background:#ede7dd;padding:22px;gap:18px}
+.editor-work .textarea{width:min(680px,100%);max-width:100%;min-height:100%;margin:0 auto;border:1px solid #ded6ca;border-radius:8px;box-shadow:0 1px 2px rgba(23,21,19,.08);padding:46px 58px;background:#fffaf2;color:#171513;font:17px/1.75 Georgia,"Times New Roman",serif;resize:none;outline:0}
+.rich-editor{overflow:auto;white-space:normal}
+.rich-editor:empty::before{content:attr(data-placeholder);color:#8b8173}
+.rich-editor p{margin:0 0 1em}
+.rich-editor h1,.rich-editor h2,.rich-editor h3{font-family:Inter,ui-sans-serif,system-ui,sans-serif;line-height:1.25;margin:1.1em 0 .55em}
+.rich-editor h1:first-child,.rich-editor h2:first-child,.rich-editor h3:first-child,.rich-editor p:first-child{margin-top:0}
+.rich-editor blockquote{border-left:3px solid #c77b3a;margin:1em 0;padding:.2em 1em;color:#625b52;background:#fbf5ec}
+.preview-pane{display:none;width:min(680px,100%);max-width:100%;min-height:100%;margin:0 auto;border:1px solid #ded6ca;border-radius:8px;background:#fffaf2;padding:46px 58px;font:17px/1.75 Georgia,"Times New Roman",serif;overflow:auto;white-space:normal}
+.preview-pane.active{display:block}
+.editor-work.previewing .textarea{display:none}
+.preview-pane h1,.preview-pane h2,.preview-pane h3{font-family:Inter,ui-sans-serif,system-ui,sans-serif;line-height:1.25}
+.preview-pane blockquote{border-left:3px solid #c77b3a;margin:1em 0;padding:.2em 1em;color:#625b52;background:#fbf5ec}
+.preview-pane p{margin:0 0 1em}
+#editor-rule-report .rule-file{border-bottom:0}
+.main,.content{min-height:0}
+.view.active{display:block;overflow:auto}
+.view>.card,.view>.split,.view>.grid,.view>.columns,.view>.gate-wrap,.view>.log{min-width:0}
+.card{min-width:0}
+.packet-box{max-width:100%}
+#view-editor.active{display:block;overflow:hidden}
+#view-editor{padding:14px}
+#view-editor .editor{height:calc(100vh - 92px);min-height:0}
+.edit-pane,.files,.editor-work{min-height:0}
+#view-assemble .split,#view-safety .split,#view-bible .split,#view-session .split{align-items:start}
+#view-assemble .packet-box{height:calc(100vh - 280px);min-height:300px}
+#view-log .log th{position:sticky;top:0;z-index:1}
+.bible-list,#delta-list,#health-output,#flags-list,#dash-flags,#diagnostics,#recent-files,#git-status{max-height:calc(100vh - 260px);overflow:auto}
+.cleanup-item{border-bottom:1px solid #e6ded3;padding:12px 0}
+.cleanup-item p{margin:6px 0 10px;line-height:1.45;color:#3b352f}
+.cleanup-row{display:grid;grid-template-columns:160px 150px 1fr;gap:8px;align-items:center}
+.cleanup-row select,.cleanup-row input{border:1px solid #d4cbbd;border-radius:7px;padding:7px 8px;background:white;min-width:0}
+@media(max-width:950px){.cleanup-row{grid-template-columns:1fr}}
+.monitor-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:10px 0}
+.monitor-pill{border:1px solid #ded6ca;border-radius:7px;background:white;padding:8px 9px;min-width:0}
+.monitor-pill span{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#71695f}
+.monitor-pill strong{display:block;font-size:15px;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.health-list{max-height:360px;overflow:auto}
+.health-row{display:grid;grid-template-columns:78px 1fr auto;gap:10px;align-items:center;border-bottom:1px solid #e6ded3;padding:8px 0}
+.health-row strong{font-size:13px}
+.health-row small{display:block;color:#71695f;margin-top:2px}
+.health-tags{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}
+.health-tag{font-size:11px;border:1px solid #d4cbbd;border-radius:99px;padding:2px 6px;background:white;color:#625b52}
+.health-tag.warn{border-color:#d8a676;background:#fff3e6;color:#7a4216}
+#view-pipeline.active{overflow:hidden}
+#view-pipeline .columns{flex:1;height:100%;min-height:0}
+#view-pipeline .col{min-height:0;overflow:auto}
+@media(max-width:950px){.view.active{padding:14px}#view-pipeline.active,#view-editor.active{overflow:auto}.top{height:auto;min-height:64px;flex-wrap:wrap;padding:10px 14px}.top-actions{width:100%;margin-left:0}.search{flex:1;width:auto}.editor{height:auto;min-height:calc(100vh - 120px)}#view-assemble .packet-box{height:360px}#act-progress{grid-template-columns:1fr!important}}
+</style>
+<style>
+:root{color-scheme:light;--bg:#f4f1ec;--panel:#fffaf2;--panel-2:#fbf5ec;--panel-3:#f3ece2;--rail:#272521;--rail-panel:#38352f;--rail-border:#504c43;--text:#171513;--text-soft:#3b352f;--muted:#71695f;--muted-2:#625b52;--line:#ded6ca;--line-2:#e6ded3;--input:#fff;--input-text:#171513;--bar:#e3dbcf;--primary:#171513;--primary-text:#fffaf2;--accent:#c77b3a;--accent-text:#1f130a;--green:#2f7d64;--blue:#4879ad;--purple:#8265a7;--shadow:rgba(23,21,19,.08);--modal:rgba(23,21,19,.45)}
+body[data-theme=dark]{color-scheme:dark;--bg:#171513;--panel:#24211d;--panel-2:#2c2823;--panel-3:#312d27;--rail:#11100e;--rail-panel:#28241f;--rail-border:#494137;--text:#f7f0e5;--text-soft:#e3d7c6;--muted:#bcae9d;--muted-2:#d0c2b0;--line:#4b4338;--line-2:#39332c;--input:#181613;--input-text:#f7f0e5;--bar:#413a31;--primary:#f7f0e5;--primary-text:#171513;--accent:#d78a43;--accent-text:#17100a;--green:#4aa483;--blue:#6e9fd0;--purple:#a58ac4;--shadow:rgba(0,0,0,.32);--modal:rgba(0,0,0,.68)}
+body{background:var(--bg);color:var(--text)}
+.side{background:var(--rail);color:var(--primary-text)}
+.brand{border-bottom-color:rgba(255,255,255,.12)}.brand span,.label,.project span{color:#bfb5a6}
+.project:hover,.project.active,.nav button{background:var(--rail-panel);border-color:var(--rail-border);color:#f7f3ea}
+.nav button.active{background:var(--accent);color:var(--accent-text);border-color:var(--accent)}
+.top,.card,.chapter,.editor,.textarea,.gate-wrap,.log,.results button,.dialog,.packet-box,.preview-pane{background:var(--panel);border-color:var(--line);color:var(--text)}
+.content,.view{background:var(--bg)}
+.top,.toolbar,.foot{border-color:var(--line)}
+.top-title span,.metric .k,.metric .s,.empty,.results small,.bible-item small,.file-group,.log th,.monitor-pill span,.health-row small{color:var(--muted)}
+.chapter p,.field span,.col h3,.cleanup-item p,.health-tag,.gate-table th,.gate-table td:first-child,.flag span,#next-move,#act-progress .s{color:var(--muted-2)}
+.nav button,.ghost,.primary,.iconbtn,.field input,.field textarea,.field select,.search,.stage-row button,.gate-btn,.rule-hit,.cleanup-row select,.cleanup-row input,.monitor-pill,.health-tag{border-color:var(--line);background:var(--input);color:var(--input-text)}
+.ghost,.iconbtn{background:var(--panel);color:var(--text)}.primary{background:var(--primary);color:var(--primary-text);border-color:var(--primary)}
+.search,.field input,.field textarea,.field select,.cleanup-row select,.cleanup-row input{background:var(--input);color:var(--input-text)}
+.search::placeholder,input::placeholder,textarea::placeholder{color:var(--muted)}
+.bar{background:var(--bar)}.fill,.gate-btn.on{background:var(--green);border-color:var(--green)}
+.col{background:var(--panel-3);border-color:var(--line)}.chapter{border-color:var(--line);border-left-color:#8b8173}.chapter[data-stage=drafting]{border-left-color:var(--blue)}.chapter[data-stage=self-edit]{border-left-color:var(--purple)}.chapter[data-stage=review]{border-left-color:var(--accent)}.chapter[data-stage=final]{border-left-color:var(--green)}
+.stage-row button.on{background:var(--primary);color:var(--primary-text);border-color:var(--primary)}
+.files,.log th,.gate-table th,.gate-table th:first-child{background:var(--panel-3)}.file{color:var(--text)}.file:hover,.file.active{background:var(--panel-2)}
+.toolbar,.editor-work,.preview-pane blockquote{background:var(--panel-2)}.editor-work .textarea,.preview-pane{box-shadow:0 1px 2px var(--shadow)}
+.foot,.log th,.log td,.flag,.bible-item,.rule-file,.cleanup-item,.health-row,.gate-table th,.gate-table td{border-color:var(--line-2)}
+.gate-table td:first-child{background:var(--panel)}.health-tag.warn{border-color:#ad7440;background:rgba(199,123,58,.18);color:#f0c396}
+.modal{background:var(--modal)}.toast{background:var(--primary);color:var(--primary-text)}
+.theme-toggle{min-width:92px}
+.toolbar .ghost.on{background:var(--primary);color:var(--primary-text);border-color:var(--primary)}
+body[data-theme=dark] img{filter:brightness(.95)}
+.reader-home{max-width:1220px;margin:0 auto}.library-shelf{margin-bottom:14px}.library-heading{display:flex;justify-content:space-between;gap:18px;align-items:flex-end;margin-bottom:16px}.library-heading h1{font-size:28px;line-height:1.1;margin:0 0 5px}.library-heading p{margin:0;color:var(--muted-2);font-size:13px}.library-books{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:18px}.book-card{border:0;background:transparent;color:var(--text);padding:0;text-align:left;min-width:0}.book-card:hover .book-cover,.book-card.active .book-cover{border-color:var(--accent);box-shadow:0 8px 22px var(--shadow)}.book-card.active .book-cover{outline:3px solid var(--accent);outline-offset:2px}.book-cover{display:block;aspect-ratio:2/3;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--panel-2);box-shadow:0 2px 8px var(--shadow);transition:border-color .15s ease,box-shadow .15s ease}.book-cover img{display:block;width:100%;height:100%;object-fit:cover}.book-cover-placeholder{height:100%;display:flex;align-items:flex-end;padding:14px;background:linear-gradient(160deg,var(--panel-3),var(--panel));color:var(--text)}.book-cover-placeholder span{font-weight:800;font-size:15px;line-height:1.15}.book-card strong{display:block;margin-top:10px;font-size:14px;line-height:1.25;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}.book-card small{display:block;color:var(--muted);font-size:12px;line-height:1.35;margin-top:4px}.reader-hero{min-height:210px;display:flex;justify-content:space-between;gap:22px;align-items:flex-end;padding:34px 36px;border:1px solid var(--line);border-radius:8px;background:linear-gradient(180deg,var(--panel),var(--panel-2));box-shadow:0 1px 2px var(--shadow)}.reader-kicker{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:10px}.reader-hero h1{font-size:42px;line-height:1.05;margin:0 0 10px;letter-spacing:0}.reader-hero p{font-size:15px;line-height:1.55;color:var(--muted-2);margin:0;max-width:680px}.reader-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}.reader-progress{margin-top:14px}.reader-progress>div:first-child{display:flex;justify-content:space-between;gap:12px;margin-bottom:10px;color:var(--muted-2);font-size:13px}.reader-layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:14px;margin-top:14px}.reader-layout h2,.reader-sidecard h2{font-size:17px;margin:0 0 12px}.reader-chapters{display:grid;gap:8px}.reader-chapter{width:100%;text-align:left;border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:7px;padding:12px 13px;display:grid;grid-template-columns:74px 1fr auto;gap:12px;align-items:center}.reader-chapter:hover,.reader-chapter.active{border-color:var(--accent);background:var(--panel-2)}.reader-chapter .num{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}.reader-chapter strong{font-size:15px}.reader-chapter small{display:block;color:var(--muted);margin-top:3px}.reader-chapter .words{font-size:12px;color:var(--muted-2);white-space:nowrap}.reader-sidecard{align-self:start}.reader-mode .editor{grid-template-columns:260px minmax(0,1fr);border:0;background:transparent}.reader-mode .files{border:1px solid var(--line);border-radius:8px;background:var(--panel);margin-right:0}.reader-mode .edit-pane{background:transparent}.reader-mode .toolbar{border:1px solid var(--line);border-radius:8px;background:var(--panel);margin-bottom:10px}.reader-mode .editor-work{border:1px solid var(--line);border-radius:8px;background:var(--panel-2);padding:28px;align-items:flex-start}.reader-mode .rich-editor{cursor:default}.reader-mode .rich-editor[contenteditable=true]{cursor:text}.reader-mode .foot{border:1px solid var(--line);border-radius:8px;background:var(--panel);margin-top:10px}.reader-mode #save-state{color:var(--muted);font-size:12px}
+@media(max-width:950px){.library-books{grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:14px}.reader-hero{align-items:flex-start;flex-direction:column;padding:24px}.reader-hero h1{font-size:32px}.reader-layout{grid-template-columns:1fr}.reader-chapter{grid-template-columns:1fr}.reader-chapter .words{white-space:normal}.reader-mode .editor{grid-template-columns:1fr}.reader-mode .files{max-height:220px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="brand"><h1 id="machine-name">Book Machine OS<span id="author-name">Local writing library</span></h1></div>
+    <div class="side-scroll">
+      <div class="nav">
+        <button class="active" data-view="dashboard">Library</button>
+        <button data-view="editor">Reader</button>
+        <button data-view="assemble">Export</button>
+        <button data-view="safety">Git</button>
+        <button data-view="config">Config</button>
+        <button data-view="brief">Book Info</button>
+        <button data-view="log">Log</button>
+      </div>
+      <div class="label">Pen Name</div>
+      <select id="pen-filter" style="width:100%;border:1px solid var(--rail-border);background:var(--rail-panel);color:#f7f3ea;border-radius:7px;padding:8px 10px;margin-bottom:8px"></select>
+      <div class="label">Projects</div>
+      <div id="projects"></div>
+      <button class="primary" style="width:100%;margin-top:10px" id="new-project">New Project</button>
+    </div>
+  </aside>
+  <main class="main">
+    <header class="top">
+      <div class="top-title"><strong id="project-title">Loading...</strong><span id="project-sub">Preparing your library</span></div>
+      <div class="top-actions">
+        <button class="ghost theme-toggle" id="theme-toggle" title="Toggle dark mode">Dark</button>
+        <input class="search" id="search" placeholder="Search project">
+        <button class="ghost" id="export">Export DOCX</button>
+      </div>
+    </header>
+    <section class="content">
+      <div class="view active" id="view-dashboard">
+        <div class="reader-home">
+          <section class="library-shelf card">
+            <div class="library-heading">
+              <div>
+                <div class="reader-kicker" id="library-pen">All pen names</div>
+                <h1>Library</h1>
+                <p id="library-count">Preparing your books.</p>
+              </div>
+            </div>
+            <div id="library-books" class="library-books"></div>
+          </section>
+          <section class="reader-hero">
+            <div>
+              <div class="reader-kicker" id="reader-pen">Library</div>
+              <h1 id="reader-title">Loading...</h1>
+              <p id="reader-subtitle">Preparing your manuscript.</p>
+            </div>
+            <div class="reader-actions">
+              <button class="primary" id="continue-reading">Continue Reading</button>
+              <button class="ghost" id="reader-export">Export DOCX</button>
+            </div>
+          </section>
+          <section class="reader-progress card">
+            <div><strong id="reader-progress-label">Manuscript</strong><span id="reader-progress-note">0 chapters</span></div>
+            <div class="bar"><div class="fill" id="reader-progress-fill"></div></div>
+          </section>
+          <section class="reader-layout">
+            <div class="card">
+              <h2>Chapters</h2>
+              <div id="reader-chapters" class="reader-chapters"></div>
+            </div>
+            <aside class="card reader-sidecard">
+              <h2>Reading Notes</h2>
+              <div id="reader-open-questions" class="empty">No open notes.</div>
+              <div id="reader-approvals" style="margin-top:14px"></div>
+            </aside>
+          </section>
+        </div>
+        <div class="card results" id="search-results" style="display:none;margin-top:14px"></div>
+      </div>
+      <div class="view" id="view-readiness">
+        <div class="grid dash-grid" id="readiness-metrics"></div>
+        <div class="split" style="margin-top:14px">
+          <div class="card"><h2 style="margin:0 0 8px;font-size:17px">Blocking Issues</h2><div id="readiness-issues" class="empty">Open this tab to scan readiness.</div></div>
+          <div class="card"><h2 style="margin:0 0 8px;font-size:17px">Draft Health</h2><div id="readiness-health" class="empty"></div></div>
+        </div>
+        <div class="split" style="margin-top:14px">
+          <div class="card">
+            <h2 style="margin:0 0 8px;font-size:17px">Log Editor Return</h2>
+            <div class="field"><span>Label</span><input id="return-label" placeholder="Developmental edit round 1"></div>
+            <div class="field"><span>Returned File Name</span><input id="return-file" placeholder="Holdfast_edit_round1.docx"></div>
+            <div class="split" style="grid-template-columns:1fr 1fr">
+              <div class="field"><span>Date Returned</span><input id="return-date" type="date"></div>
+              <div class="field"><span>Status</span><select id="return-status"><option value="received">Received</option><option value="in-progress">In progress</option><option value="reconciled">Reconciled</option><option value="archived">Archived</option></select></div>
+            </div>
+            <div class="field"><span>Chapters Affected</span><input id="return-chapters" placeholder="1-12, 15"></div>
+            <div class="field"><span>Notes</span><textarea id="return-notes" placeholder="What came back, what needs to be reconciled, what changed."></textarea></div>
+            <button class="primary" id="save-return">Log Return</button>
+          </div>
+          <div class="card"><h2 style="margin:0 0 8px;font-size:17px">Recent Returns</h2><div id="return-list" class="empty"></div></div>
+        </div>
+      </div>
+      <div class="view" id="view-pipeline"><div class="columns" id="columns"></div></div>
+      <div class="view" id="view-session">
+        <div class="card">
+            <h2 style="margin:0 0 8px;font-size:17px">Session Command</h2>
+            <div class="split" style="grid-template-columns:1fr 1fr">
+              <div class="field"><span>Chapter</span><select id="session-chapter"></select></div>
+              <div class="field"><span>Task</span><select id="session-intent"><option value="draft">Draft</option><option value="revise">Revise</option><option value="line-edit">Line edit</option><option value="continuity">Continuity pass</option><option value="bible-update">Bible update</option></select></div>
+            </div>
+            <div class="field"><span>Session Summary</span><textarea id="session-summary" placeholder="What changed, what was decided, what the chapter now does."></textarea></div>
+            <div class="field"><span>Files Touched</span><input id="session-files" placeholder="chapter-13.md, senna-holt.md"></div>
+            <div class="field"><span>Next Move</span><input id="session-next" placeholder="The next concrete action."></div>
+            <div class="field"><span>Flags To Add</span><textarea id="session-flags" placeholder="One flag per line, only if Alex needs to decide something."></textarea></div>
+            <div class="field"><span>Canon Deltas</span><textarea id="session-deltas" placeholder="One canon candidate per line. These go into canon-deltas.json, not the bible docx."></textarea></div>
+            <button class="primary" id="record-session">Record Session</button>
+        </div>
+        <div class="card" style="margin-top:14px">
+          <h2 style="margin:0 0 8px;font-size:17px">Import Metadata JSON</h2>
+          <div class="field"><span>Paste model JSON</span><textarea id="metadata-import" placeholder='{"chapter":13,"summary":"...","pov":"Senna"}'></textarea></div>
+          <button class="primary" id="apply-metadata">Apply Metadata</button>
+        </div>
+      </div>
+      <div class="view" id="view-editor">
+        <div class="editor reader-mode">
+          <div class="files" id="files"></div>
+          <div class="edit-pane">
+            <div class="toolbar"><button class="ghost" id="read-prev">Previous</button><button class="ghost" id="read-next">Next</button><span class="name" id="file-name">No chapter open</span><span id="save-state"></span><button class="ghost" id="edit-toggle">Edit</button><button class="ghost" id="save">Save</button></div>
+            <div class="toolbar" style="height:auto;min-height:46px;flex-wrap:wrap">
+              <input id="find-text" placeholder="Find" style="width:150px;border:1px solid #d4cbbd;border-radius:7px;padding:7px 9px;background:white">
+              <input id="replace-text" placeholder="Replace" style="width:150px;border:1px solid #d4cbbd;border-radius:7px;padding:7px 9px;background:white">
+              <button class="ghost" id="find-next">Find</button><button class="ghost" id="replace-one">Replace</button><button class="ghost" id="replace-all">Replace all</button>
+              <select id="editor-width"><option value="680">Page</option><option value="820">Wide</option><option value="100%">Full</option></select>
+              <select id="editor-size"><option value="16">16</option><option value="17" selected>17</option><option value="18">18</option><option value="20">20</option></select>
+            </div>
+            <div class="editor-work"><div class="textarea rich-editor" id="editor-text" contenteditable="false" spellcheck="true" data-placeholder="Open a chapter to read."></div><div class="preview-pane" id="preview-pane"></div></div>
+            <div id="editor-rule-report" class="empty" style="display:none;border-top:1px solid #ded6ca"></div>
+            <div class="foot"><span id="word-count">0 words</span><span id="char-count">0 characters</span><span id="file-path"></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="view" id="view-assemble">
+        <div class="split">
+          <div class="card">
+            <h2 style="margin:0 0 8px;font-size:17px">Assemble Export</h2>
+            <div class="field"><span>Mode</span><select id="assemble-mode"><option value="manuscript">Manuscript</option><option value="review">Review copy</option><option value="context">LLM context</option><option value="bible-update">Bible update</option></select></div>
+            <div class="field"><span>Format</span><select id="assemble-format"><option value="docx">Word document (.docx)</option><option value="markdown">Markdown (.md)</option><option value="both">Both</option></select></div>
+            <div class="split" style="grid-template-columns:1fr 1fr">
+              <div class="field"><span>Start Chapter</span><input id="assemble-start" type="number" min="1"></div>
+              <div class="field"><span>End Chapter</span><input id="assemble-end" type="number" min="1"></div>
+            </div>
+            <label style="display:flex;gap:8px;align-items:center;margin-bottom:10px;font-size:13px"><input type="checkbox" id="assemble-final"> Only final chapters</label>
+            <label style="display:flex;gap:8px;align-items:center;margin-bottom:10px;font-size:13px"><input type="checkbox" id="assemble-text"> Include chapter text in context export</label>
+            <label style="display:flex;gap:8px;align-items:center;margin-bottom:12px;font-size:13px"><input type="checkbox" id="assemble-headings" checked> Include chapter headings</label>
+            <button class="primary" id="assemble-run">Assemble</button>
+            <div id="assemble-result" class="empty"></div>
+          </div>
+          <div class="card">
+            <h2 style="margin:0 0 8px;font-size:17px">Preview</h2>
+            <textarea class="packet-box" id="assemble-preview" placeholder="Assembled Markdown preview appears here."></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="view" id="view-safety">
+        <div class="grid dash-grid" id="safety-metrics"></div>
+        <div class="split" style="margin-top:14px">
+          <div class="card">
+            <h2 style="margin:0 0 8px;font-size:17px">Git Status</h2>
+            <div id="git-status" class="empty">Open this tab to scan the repo.</div>
+            <div class="field" style="margin-top:12px"><span>Commit Message</span><input id="commit-message" placeholder="Describe this writing session"></div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="primary" id="git-commit">Commit Changes</button><button class="ghost" id="refresh-safety">Refresh</button></div>
+          </div>
+          <div class="card">
+            <h2 style="margin:0 0 8px;font-size:17px">Snapshot</h2>
+            <p style="font-size:13px;color:#625b52;line-height:1.5">Creates a timestamped zip of the project folder, excluding git internals, exports, snapshots, and node modules.</p>
+            <button class="primary" id="create-snapshot">Create Snapshot</button>
+            <div id="snapshot-result" class="empty"></div>
+          </div>
+        </div>
+        <div class="split" style="margin-top:14px">
+          <div class="card"><h2 style="margin:0 0 8px;font-size:17px">Diagnostics</h2><div id="diagnostics" class="empty"></div></div>
+          <div class="card"><h2 style="margin:0 0 8px;font-size:17px">Recent Files</h2><div id="recent-files" class="empty"></div></div>
+        </div>
+      </div>
+      <div class="view" id="view-bible">
+        <div class="card">
+          <h2 style="margin:0 0 8px;font-size:17px">Bible Index</h2>
+          <div id="bible-meta" class="empty">Open this tab to read the project bible.</div>
+          <div class="bible-list" id="bible-list"></div>
+        </div>
+        <div class="card" style="margin-top:14px">
+          <h2 style="margin:0 0 8px;font-size:17px">Bible Health</h2>
+          <div id="health-output" class="empty">Bible health will load with the Bible tab.</div>
+        </div>
+        <div class="card" style="margin-top:14px">
+          <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap">
+            <h2 style="margin:0;font-size:17px">Bible Cleanup Queue</h2>
+            <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="ghost" id="cleanup-packet">Generate Cleanup Packet</button><button class="primary" id="apply-cleanup">Apply Handled To DOCX</button></div>
+          </div>
+          <div id="cleanup-output" class="empty">Placeholder cleanup tasks will load with the Bible tab.</div>
+          <textarea class="packet-box" id="cleanup-packet-output" style="margin-top:12px;min-height:220px" placeholder="Bible cleanup packet appears here."></textarea>
+        </div>
+        <div class="split" style="margin-top:14px">
+          <div class="card">
+            <h2 style="margin:0 0 8px;font-size:17px">Canon Deltas</h2>
+            <div class="field"><span>New Canon Candidate</span><textarea id="delta-text" placeholder="What changed or needs to be reconciled with the bible?"></textarea></div>
+            <div class="split" style="grid-template-columns:1fr 1fr">
+              <div class="field"><span>Category</span><select id="delta-category"><option value="character">Character</option><option value="setting">Setting</option><option value="timeline">Timeline</option><option value="unreliability">Unreliability</option><option value="relationship">Relationship</option><option value="plot">Plot reveal</option><option value="ending">Ending constraint</option><option value="general">General</option></select></div>
+              <div class="field"><span>Chapter</span><select id="delta-chapter"></select></div>
+            </div>
+            <button class="primary" id="add-delta">Add Delta</button>
+          </div>
+          <div class="card">
+            <h2 style="margin:0 0 8px;font-size:17px">Delta Queue</h2>
+            <div id="delta-list" class="empty">No canon deltas loaded.</div>
+          </div>
+        </div>
+      </div>
+      <div class="view" id="view-ai">
+        <div class="split">
+          <div class="card">
+            <h2 style="margin:0 0 8px;font-size:17px">Project-aware context</h2>
+            <div class="split" style="grid-template-columns:1fr 1fr">
+              <div class="field"><span>Context mode</span><select id="ai-mode"><option value="chapter">Selected chapter</option><option value="project">Project overview</option><option value="open-loops">Open loops</option><option value="bible">Story bible</option><option value="canon">Canon update packet</option></select></div>
+              <div class="field"><span>Chapter</span><select id="ai-chapter"></select></div>
+            </div>
+            <label style="display:flex;gap:8px;align-items:center;margin-bottom:12px;font-size:13px"><input type="checkbox" id="ai-include-text"> Include chapter text</label>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px"><button class="primary" id="ai-context-refresh">Generate Context</button><button class="ghost" id="ai-copy-context">Copy Context</button></div>
+            <textarea class="packet-box" id="ai-context-output" placeholder="Project context packet appears here."></textarea>
+          </div>
+          <div class="card">
+            <h2 style="margin:0 0 8px;font-size:17px">Ask with this context</h2>
+            <div class="split" style="grid-template-columns:1fr 1fr">
+              <div class="field"><span>Provider</span><select id="ai-provider"><option value="anthropic">Anthropic</option><option value="openai">OpenAI</option><option value="openrouter">OpenRouter</option></select></div>
+              <div class="field"><span>Model</span><input id="ai-model" value="claude-3-5-sonnet-latest"></div>
+            </div>
+            <div id="openrouter-model-tools" style="display:none">
+              <div class="split" style="grid-template-columns:1fr 1fr">
+                <div class="field"><span>OpenRouter model list</span><select id="openrouter-models"></select></div>
+                <div class="field"><span>Sort</span><select id="openrouter-sort"><option value="cheap">Cheapest first</option><option value="popular">Popular</option><option value="context">Longest context</option><option value="name">Name</option></select></div>
+              </div>
+              <div class="split" style="grid-template-columns:1fr 1fr">
+                <div class="field"><span>Search</span><input id="openrouter-search" placeholder="claude, gpt, gemini, free..."></div>
+                <div class="field"><span>Family</span><select id="openrouter-family"><option value="">All families</option><option value="anthropic">Claude</option><option value="openai">OpenAI / GPT</option><option value="google">Gemini</option><option value="meta-llama">Llama</option><option value="mistral">Mistral</option></select></div>
+              </div>
+              <label style="display:flex;gap:8px;align-items:center;margin-bottom:10px;font-size:13px"><input type="checkbox" id="openrouter-free"> Free models only</label>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px"><button class="ghost" id="openrouter-refresh">Refresh Models</button><span id="openrouter-model-status" style="font-size:12px;color:#71695f;align-self:center"></span></div>
+            </div>
+            <div class="field"><span>Request</span><textarea id="ai-prompt" placeholder="Example: Audit this chapter context for canon risk, missing metadata, and the next concrete action."></textarea></div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px"><button class="primary" id="ai-run">Ask AI</button><button class="ghost" id="ai-copy-response">Copy Response</button><button class="ghost" id="ai-save-response">Save To Sessions</button></div>
+            <textarea class="packet-box" id="ai-response-output" placeholder="AI response appears here."></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="view" id="view-claude">
+        <div class="split">
+          <div class="card">
+            <h2 style="margin:0 0 8px;font-size:17px">Claude Connector</h2>
+            <div class="field"><span>ngrok / HTTPS URL</span><input id="claude-public-url" placeholder="https://your-url.ngrok-free.app"></div>
+            <div class="field"><span>Claude connector URL</span><input id="claude-connector-url" readonly></div>
+            <div id="claude-connector-status" class="empty"></div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px"><button class="primary" id="save-claude-config">Save Claude Config</button><button class="ghost" id="copy-claude-url">Copy Connector URL</button><button class="ghost" id="refresh-claude">Refresh</button></div>
+            <div class="split" style="grid-template-columns:1fr 1.2fr">
+              <div class="field"><span>Claude command</span><input id="claude-command" placeholder="claude"></div>
+              <div class="field"><span>Args template</span><input id="claude-args-template" placeholder="-p {prompt}"></div>
+            </div>
+            <p style="font-size:13px;color:#625b52;line-height:1.5;margin:0">The OS starts Claude in the selected project folder. If your Claude install needs a different command, set it here once.</p>
+          </div>
+          <div class="card">
+            <h2 style="margin:0 0 8px;font-size:17px">Pipeline Control</h2>
+            <div class="split" style="grid-template-columns:1fr 1fr">
+              <div class="field"><span>Action</span><select id="claude-action"><option value="draft-next">Draft next chapter</option><option value="draft-chapter">Draft selected chapter</option><option value="keep-drafting">Keep drafting</option><option value="self-edit">Self-edit chapter</option><option value="revise">Revise chapter</option><option value="audit">Audit chapter</option><option value="metadata-sync">Repair metadata sync</option></select></div>
+              <div class="field"><span>Chapter</span><select id="claude-chapter"></select></div>
+            </div>
+            <div class="field"><span>Extra direction</span><textarea id="claude-extra" placeholder="Optional: specific thing to focus on. The OS will still send project/chapter context through Holdfast."></textarea></div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="primary" id="start-claude-job">Start Claude Job</button><button class="ghost" id="claude-open-flags">Review Flags First</button></div>
+          </div>
+        </div>
+        <div class="split" style="margin-top:14px">
+          <div class="card">
+            <h2 style="margin:0 0 8px;font-size:17px">Claude Jobs</h2>
+            <div id="claude-jobs" class="empty">No Claude jobs yet.</div>
+          </div>
+          <div class="card">
+            <h2 style="margin:0 0 8px;font-size:17px">How This Is Wired</h2>
+            <div class="bible-item"><strong>OS controls the pipeline</strong><small>Use this tab to start draft, edit, audit, or metadata repair jobs.</small></div>
+            <div class="bible-item"><strong>Claude does the writing work</strong><small>Claude runs in the project folder and talks back through Holdfast MCP/API.</small></div>
+            <div class="bible-item"><strong>You approve gates here</strong><small>Canon approvals, flags, dashboard status, and exported files stay in the OS.</small></div>
+          </div>
+        </div>
+      </div>
+      <div class="view" id="view-config">
+        <div class="split">
+          <div class="card">
+            <h2 style="margin:0 0 8px;font-size:17px">App Config</h2>
+            <div class="field"><span>App display name</span><input id="settings-machine-name" placeholder="Book Machine OS"></div>
+            <div class="field"><span>Default pen name</span><input id="settings-author" placeholder="Primary Pen"></div>
+            <div class="field"><span>App settings file</span><input id="settings-path" readonly></div>
+            <div class="field"><span>Pen profiles</span><textarea id="settings-pen-profiles" placeholder="Primary Pen | C:\Users\you\Desktop\WRITING\Primary Pen&#10;Second Pen | D:\Writing\Second Pen"></textarea></div>
+            <p style="font-size:13px;color:#625b52;line-height:1.5">Use one pen per line. Add a repo/library path after a | when that pen should create and scan projects somewhere separate.</p>
+            <div class="field"><span>Loose DOCX libraries</span><textarea id="settings-loose-libraries" placeholder="Selena Monroe | E:\selena-monroe-fiction&#10;Another Pen | D:\Sudowrite Manuscripts"></textarea></div>
+            <p style="font-size:13px;color:#625b52;line-height:1.5">Optional. Use this for messy SudoWrite-style folders. The app scans these read-only, groups DOCX versions by book folder, and picks a likely reading copy.</p>
+            <button class="ghost" id="save-settings" type="button">Save App Identity</button>
+            <hr style="border:0;border-top:1px solid #ded4c6;margin:16px 0">
+            <div class="field"><span>Config file</span><input id="config-path" readonly></div>
+            <div class="field"><span>Port</span><input id="config-port" placeholder="3217"></div>
+            <div class="field"><span>Writing repo path</span><input id="config-repo" placeholder="C:\Users\you\Desktop\WRITING\..."></div>
+            <div class="field"><span>Standalone library path</span><input id="config-library" placeholder="Only used when repo path is blank"></div>
+            <p style="font-size:13px;color:#625b52;line-height:1.5">Changing port or library paths requires restarting the desktop app. API keys and webhook changes are picked up by new requests after saving.</p>
+            <button class="primary" id="save-config">Save Config</button>
+            <div id="config-result" class="empty"></div>
+          </div>
+          <div class="card">
+            <h2 style="margin:0 0 8px;font-size:17px">Secrets</h2>
+            <div id="config-secret-status" class="empty"></div>
+            <div class="field"><span>Replace Discord Webhook</span><input id="config-discord" type="password" placeholder="Leave blank to keep current value"></div>
+            <div class="field"><span>Replace Anthropic API Key</span><input id="config-anthropic" type="password" placeholder="Leave blank to keep current value"></div>
+            <div class="field"><span>Replace OpenAI API Key</span><input id="config-openai" type="password" placeholder="Leave blank to keep current value"></div>
+            <div class="field"><span>Replace OpenRouter API Key</span><input id="config-openrouter" type="password" placeholder="Leave blank to keep current value"></div>
+            <div class="field"><span>Replace MCP Auth Token</span><input id="config-mcp-token" type="password" placeholder="Leave blank to keep current value"></div>
+            <button class="ghost" id="generate-mcp-token" type="button">Generate MCP Token</button>
+            <hr style="border:0;border-top:1px solid #ded4c6;margin:16px 0">
+            <div class="field"><span>Website Login Email</span><input id="config-web-email" type="email" placeholder="you@example.com"></div>
+            <div class="field"><span>Replace Website Password</span><input id="config-web-password" type="password" placeholder="Leave blank to keep current value"></div>
+          </div>
+        </div>
+        <div class="card" style="margin-top:14px">
+          <h2 style="margin:0 0 8px;font-size:17px">Claude MCP Bridge</h2>
+          <p style="font-size:13px;color:#625b52;line-height:1.5;margin-top:0">Claude's custom connector screen requires an HTTPS URL. Use the local endpoint below only through a private HTTPS tunnel. If MCP auth is configured, append the token to the tunneled URL as <code>?token=...</code>.</p>
+          <div id="mcp-auth-status" class="empty"></div>
+          <div class="field"><span>Local MCP endpoint</span><input id="mcp-remote-url" readonly></div>
+          <div class="field"><span>Local MCP config snippet</span><textarea class="packet-box" id="mcp-config-snippet" readonly style="min-height:180px"></textarea></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="ghost" id="copy-mcp-url">Copy Remote URL</button><button class="ghost" id="copy-mcp-config">Copy Local Config</button><button class="ghost" id="refresh-mcp-config">Refresh Snippet</button></div>
+        </div>
+      </div>
+      <div class="view" id="view-brief">
+        <div class="split">
+          <div class="card">
+            <div class="field"><span>Title</span><input id="brief-title"></div>
+            <div class="field"><span>Pen name</span><input id="brief-pen-name" list="pen-name-options"></div>
+            <div class="field"><span>Status</span><select id="brief-status"><option>active</option><option>draft</option><option>paused</option><option>finished</option></select></div>
+            <div class="field"><span>Soft word guide</span><input id="brief-target" type="number"></div>
+            <div class="field"><span>Planned chapters</span><input id="brief-chapters" type="number"></div>
+            <button class="primary" id="save-brief">Save Settings</button>
+          </div>
+          <div class="card"><div class="field"><span>Premise</span><textarea id="brief-premise"></textarea></div></div>
+        </div>
+        <div class="card" style="margin-top:14px"><h2 style="margin:0 0 12px;font-size:17px">Chapter Beats</h2><div id="beats"></div><button class="primary" id="save-beats">Save Beats</button></div>
+      </div>
+      <div class="view" id="view-flags">
+        <div class="card"><div class="field"><span>Add a question or blocker</span><input id="flag-text" placeholder="What decision is needed?"></div><button class="primary" id="add-flag">Add Flag</button></div>
+        <div class="card" style="margin-top:14px"><h2 style="margin:0 0 8px;font-size:17px">Pending Canon Approvals</h2><div id="canon-approval-list" class="empty">No pending canon approvals.</div></div>
+        <div class="card" style="margin-top:14px" id="flags-list"></div>
+      </div>
+      <div class="view" id="view-log"><table class="log"><thead><tr><th>Time</th><th>Type</th><th>Detail</th></tr></thead><tbody id="log-body"></tbody></table></div>
+    </section>
+  </main>
+</div>
+<div class="modal" id="project-modal"><div class="dialog" style="width:min(860px,100%);max-height:92vh;overflow:auto"><h2>Set up a new book</h2><p style="font-size:13px;color:#625b52;line-height:1.5;margin-top:-4px">Give the OS the shape of the book. After it creates the folder, you can have Claude start the setup or drafting pass automatically.</p><div class="field"><span>Book title</span><input id="np-title" placeholder="Example: Her Truest Shape"></div><div class="field"><span>Pen name</span><input id="np-pen-name" list="pen-name-options" placeholder="Primary Pen"><datalist id="pen-name-options"></datalist><small id="np-pen-root" style="color:var(--muted)"></small></div><div class="field"><span>What is this book promising?</span><textarea id="np-premise" placeholder="A plain-language premise, emotional promise, monster/romance shape, and any must-have constraints."></textarea></div><div class="split"><div class="field"><span>Soft word guide</span><input id="np-target" type="number" value="90000"></div><div class="field"><span>Planned chapter count</span><input id="np-chapters" type="number" value="30" min="1" max="120"></div></div><div class="field"><span>Story shape</span><select id="np-beat-map"><option value="horror">Horror Beat Sheet</option><option value="save-the-cat">Save the Cat</option><option value="custom">Custom / pasted map</option></select></div><div class="field" id="np-custom-wrap" style="display:none"><span>Custom beat map</span><textarea id="np-custom-beats" placeholder='Paste JSON like {"1":"Opening Image"} or lines like Chapter 1: Opening Image'></textarea></div><div class="field"><span>Act structure</span><div id="np-acts"></div></div><div class="card" style="padding:12px;margin:12px 0;background:var(--panel-2)"><div class="field"><span>Starting story bible</span><input id="np-bible-file" type="file" accept=".docx,.md,.txt,.pdf"></div><p style="font-size:12px;color:#71695f;line-height:1.45;margin:0">Optional. The selected file will be copied into the new project root as <strong>holdfast_bible</strong> so Claude can see it immediately.</p></div><div class="card" style="padding:12px;margin:12px 0;background:var(--panel-2)"><div class="field"><span>After creating it, ask Claude to...</span><select id="np-claude-action"><option value="">Do nothing yet</option><option value="metadata-sync">Build/repair the project setup packet</option><option value="draft-chapter">Draft Chapter 1</option><option value="keep-drafting">Begin drafting until blocked</option></select></div><div class="field"><span>Extra setup note for Claude</span><textarea id="np-claude-extra" placeholder="Optional: voice, constraints, opening image, central wound, relationship shape, or what not to do."></textarea></div></div><div style="display:flex;gap:8px;justify-content:flex-end"><button class="ghost" data-close>Cancel</button><button class="primary" id="create-project">Create Book</button></div></div></div>
+<div class="toast" id="toast"></div>
+<script>
+const stages=['planned','drafting','self-edit','review','final'];
+const stageLabels={planned:'Planned',drafting:'Drafting','self-edit':'Self-edit',review:'Review',final:'Final'};
+let state={settings:{},projects:[],activeId:null,currentFile:null,dirty:false,saving:false,lastSavedAt:null,bible:null,lastStatusSignature:''};
+state.penFilter='all';
+state.readerEdit=false;
+const THEME_KEY='holdfast-theme';
+const DEFAULT_PEN_NAME='Primary Pen';
+let openRouterModels=[];
+const $=id=>document.getElementById(id);
+
+function toast(text){$('toast').textContent=text;$('toast').style.display='block';setTimeout(()=>$('toast').style.display='none',2200)}
+function projectPen(p){return (p&&p.config&&p.config.penName)||state.settings.author||DEFAULT_PEN_NAME}
+function penProfiles(){
+  const map=new Map();
+  (state.settings.penProfiles||[]).forEach(profile=>{if(profile&&profile.name)map.set(profile.name,{name:profile.name,repoPath:profile.repoPath||''})});
+  (state.settings.penNames||[]).forEach(name=>{if(name&&!map.has(name))map.set(name,{name,repoPath:''})});
+  (state.projects||[]).forEach(p=>{const name=projectPen(p);if(name&&!map.has(name))map.set(name,{name,repoPath:''})});
+  if(!map.size)map.set(state.settings.author||DEFAULT_PEN_NAME,{name:state.settings.author||DEFAULT_PEN_NAME,repoPath:''});
+  return [...map.values()];
+}
+function penNames(){return penProfiles().map(profile=>profile.name)}
+function visibleProjects(){
+  const projects=state.projects||[];
+  if(!state.penFilter||state.penFilter==='all')return projects;
+  return projects.filter(p=>projectPen(p)===state.penFilter);
+}
+function active(){const visible=visibleProjects();if(state.penFilter&&state.penFilter!=='all')return visible.find(p=>p.id===state.activeId)||visible[0]||null;return visible.find(p=>p.id===state.activeId)||visible[0]||state.projects[0]||null}
+function fmt(n){return Number(n||0).toLocaleString()}
+function timeAgo(value){
+  if(!value)return 'never';
+  const diff=Math.max(0,Date.now()-new Date(value).getTime());
+  const min=Math.floor(diff/60000);
+  if(min<1)return 'just now';
+  if(min<60)return `${min}m ago`;
+  const hrs=Math.floor(min/60);
+  if(hrs<24)return `${hrs}h ago`;
+  const days=Math.floor(hrs/24);
+  return `${days}d ago`;
+}
+async function api(url,opts={}){const r=await fetch(url,{headers:{'Content-Type':'application/json'},...opts});const d=await r.json();if(!r.ok||d.error)throw new Error(d.error||'Request failed');return d}
+function applyTheme(theme){
+  const next=theme==='dark'?'dark':'light';
+  document.body.dataset.theme=next;
+  try{localStorage.setItem(THEME_KEY,next)}catch{}
+  const btn=$('theme-toggle');
+  if(btn){
+    btn.textContent=next==='dark'?'Light':'Dark';
+    btn.title=next==='dark'?'Switch to light mode':'Switch to dark mode';
+  }
+}
+function initTheme(){
+  let saved='light';
+  try{saved=localStorage.getItem(THEME_KEY)||'light'}catch{}
+  applyTheme(saved);
+}
+function statusSignature(d){return JSON.stringify({settings:d.settings,projects:d.projects&&d.projects.map(p=>({id:p.id,kind:p.kind,config:p.config,cover:p.cover,loose:p.loose,metrics:p.metrics,chapters:p.chapters,planned:p.planned,flags:p.flags,canonDeltas:p.canonDeltas,logs:p.logs&&p.logs.slice(0,20),runMonitor:p.runMonitor,chapterHealth:p.chapterHealth}))})}
+async function refresh(){const d=await api('/api/status');state.lastStatusSignature=statusSignature(d);state.settings=d.settings||{};state.projects=d.projects||[];const visible=visibleProjects();if(!visible.some(p=>p.id===state.activeId)&&visible[0])state.activeId=visible[0].id;if(!state.activeId&&state.projects[0])state.activeId=state.projects[0].id;render()}
+function activeView(){const view=document.querySelector('.view.active');return view?view.id.replace('view-',''):''}
+function userIsTyping(){
+  const el=document.activeElement;
+  if(!el)return false;
+  if(el.id==='search')return false;
+  return ['INPUT','TEXTAREA','SELECT'].includes(el.tagName);
+}
+async function liveRefresh(){
+  if(document.hidden||state.dirty||state.saving||userIsTyping())return;
+  if(document.querySelector('.modal.open'))return;
+  try{
+    const d=await api('/api/status');
+    const sig=statusSignature(d);
+    if(sig===state.lastStatusSignature)return;
+    state.lastStatusSignature=sig;
+    state.settings=d.settings||{};
+    state.projects=d.projects||[];
+    const visible=visibleProjects();
+    if(!visible.some(p=>p.id===state.activeId)&&visible[0])state.activeId=visible[0].id;
+    if(!state.projects.some(p=>p.id===state.activeId)&&state.projects[0])state.activeId=state.projects[0].id;
+    render();
+    const viewName=activeView();
+    if(viewName==='readiness')loadReadiness();
+    if(viewName==='bible')loadBible();
+    if(viewName==='safety')loadSafety();
+    if(viewName==='claude')loadClaudeJobs();
+    if(viewName==='dashboard')loadDashboardClaudeJobs();
+  }catch(error){
+    console.log('Live refresh failed:', error.message);
+  }
+}
+async function view(id){await ensureSaved();document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===id));$('view-'+id).classList.add('active');if(id==='bible')loadBible();if(id==='safety')loadSafety();if(id==='readiness')loadReadiness();if(id==='config')loadConfig();if(id==='claude')loadClaudeControl();if(id==='ai'&&!$('ai-context-output').value)generateAiContext()}
+
+function defaultProjectActs(total){
+  const chapters=Math.max(1,Number(total||30));
+  const oneEnd=Math.max(1,Math.round(chapters*.27));
+  const twoEnd=Math.max(oneEnd+1,Math.round(chapters*.73));
+  return [
+    {name:'Act One',subtitle:'Opening movement',start:1,end:oneEnd},
+    {name:'Act Two',subtitle:'Middle movement',start:oneEnd+1,end:Math.min(twoEnd,chapters)},
+    {name:'Act Three',subtitle:'Closing movement',start:Math.min(twoEnd+1,chapters),end:chapters}
+  ].filter(a=>a.start<=a.end);
+}
+function renderNewProjectActs(){
+  $('np-acts').innerHTML=defaultProjectActs($('np-chapters').value).map((act,i)=>`<div class="split" style="grid-template-columns:1.2fr 1.4fr .6fr .6fr;gap:8px;margin-bottom:8px">
+    <input data-np-act="${i}" data-key="name" value="${escAttr(act.name)}" placeholder="Act name">
+    <input data-np-act="${i}" data-key="subtitle" value="${escAttr(act.subtitle)}" placeholder="Subtitle">
+    <input data-np-act="${i}" data-key="start" type="number" value="${act.start}" min="1">
+    <input data-np-act="${i}" data-key="end" type="number" value="${act.end}" min="1">
+  </div>`).join('');
+}
+function collectNewProjectActs(){
+  const rows={};
+  document.querySelectorAll('[data-np-act]').forEach(input=>{const index=input.dataset.npAct;rows[index]=rows[index]||{};rows[index][input.dataset.key]=input.type==='number'?Number(input.value):input.value});
+  return Object.keys(rows).sort((a,b)=>Number(a)-Number(b)).map(key=>rows[key]).filter(act=>act.name&&act.start&&act.end);
+}
+function renderPenOptions(){
+  const list=$('pen-name-options');
+  if(list)list.innerHTML=penNames().map(name=>`<option value="${escAttr(name)}"></option>`).join('');
+  const selected=$('np-pen-name')&&$('np-pen-name').value;
+  const profile=penProfiles().find(item=>item.name===selected);
+  if($('np-pen-root'))$('np-pen-root').textContent=profile&&profile.repoPath?`Projects for this pen will be created in ${profile.repoPath}`:'Projects for this pen will use the default app project folder.';
+}
+function openNewProjectModal(){
+  renderNewProjectActs();
+  if($('np-pen-name'))$('np-pen-name').value=state.penFilter&&state.penFilter!=='all'?state.penFilter:(state.settings.author||DEFAULT_PEN_NAME);
+  renderPenOptions();
+  $('np-custom-wrap').style.display=$('np-beat-map').value==='custom'?'block':'none';
+  $('project-modal').classList.add('open');
+}
+function fileToBase64(file){
+  return new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onload=()=>resolve(String(reader.result||'').split(',')[1]||'');
+    reader.onerror=()=>reject(reader.error||new Error('Could not read file'));
+    reader.readAsDataURL(file);
+  });
+}
+async function selectedStoryBible(){
+  const file=$('np-bible-file').files&&$('np-bible-file').files[0];
+  if(!file)return null;
+  if(file.size>12*1024*1024)throw new Error('Story bible file is too large for setup import. Please use a file under 12 MB.');
+  return {name:file.name,type:file.type,size:file.size,content:await fileToBase64(file)};
+}
+
+function render(){
+  renderPenFilter();
+  const p=active();
+  $('machine-name').firstChild.nodeValue=state.settings.machineName||'Book Machine OS';
+  $('author-name').textContent=state.penFilter&&state.penFilter!=='all'?state.penFilter:'All pen names';
+  if(!p){
+    $('project-title').textContent='No project selected';
+    $('project-sub').textContent='Create a book for this pen to begin';
+    renderProjects({id:''});
+    return;
+  }
+  $('project-title').textContent=p.config.title;
+  $('project-sub').textContent=`${projectPen(p)} · ${fmt(p.metrics.words)} words in ${p.chapters.length} drafted chapters`;
+  renderProjects(p); renderDashboard(p); renderPipeline(p); renderFiles(p); renderBrief(p); renderBibleControls(p); renderFlags(p); renderLog(p);
+}
+function renderPenFilter(){
+  const select=$('pen-filter');
+  if(!select)return;
+  const names=['all',...penNames()];
+  const current=names.includes(state.penFilter)?state.penFilter:'all';
+  state.penFilter=current;
+  select.innerHTML=names.map(name=>`<option value="${escAttr(name)}">${name==='all'?'All pen names':esc(name)}</option>`).join('');
+  select.value=current;
+}
+function renderProjects(activeProject){
+  const projects=visibleProjects();
+  $('projects').innerHTML=projects.length?projects.map(p=>`<button class="project ${p.id===activeProject.id?'active':''}" data-id="${p.id}"><strong>${esc(p.config.title)}</strong><span>${esc(projectPen(p))} · ${fmt(p.metrics.words)} words</span></button>`).join(''):'<div class="empty" style="color:#bfb5a6">No projects for this pen.</div>';
+  document.querySelectorAll('.project').forEach(btn=>btn.onclick=async()=>{await ensureSaved();state.activeId=btn.dataset.id;state.currentFile=null;render()});
+}
+function readerStorageKey(p){return `book-machine-reader:${p&&p.id||'none'}`}
+function readerLastPath(p){try{return localStorage.getItem(readerStorageKey(p))||''}catch{return ''}}
+function rememberReaderPath(p,path){try{if(p&&path)localStorage.setItem(readerStorageKey(p),path)}catch{}}
+function readerStartChapter(p){
+  const chapters=(p&&p.chapters||[]).slice().sort((a,b)=>a.num-b.num);
+  const lastPath=readerLastPath(p);
+  return chapters.find(chapter=>chapter.path===lastPath)||chapters[0]||null;
+}
+function readerChapterOffset(offset){
+  const p=active(); if(!p||!state.currentFile)return null;
+  const chapters=p.chapters.slice().sort((a,b)=>a.num-b.num);
+  const index=chapters.findIndex(chapter=>chapter.path===state.currentFile.path);
+  return chapters[index+offset]||null;
+}
+function renderLibraryShelf(activeProject){
+  const projects=visibleProjects();
+  $('library-pen').textContent=state.penFilter&&state.penFilter!=='all'?state.penFilter:'All pen names';
+  $('library-count').textContent=projects.length===1?'1 book':`${projects.length} books`;
+  $('library-books').innerHTML=projects.length?projects.map(project=>{
+    const cover=project.cover&&project.cover.url;
+    const chapters=(project.chapters||[]).length;
+    const source=project.kind==='loose-docx'?'Loose DOCX':'Project';
+    const version=project.loose&&project.loose.selectedVersion?`<br>${esc(project.loose.selectedVersion)}`:'';
+    return `<button class="book-card ${activeProject&&project.id===activeProject.id?'active':''}" data-book="${escAttr(project.id)}" title="Read ${escAttr(project.config.title||'Untitled Book')}">
+      <span class="book-cover">${cover?`<img src="${escAttr(cover)}" alt="${escAttr(project.config.title||'Book cover')}">`:`<span class="book-cover-placeholder"><span>${esc(project.config.title||'Untitled Book')}</span></span>`}</span>
+      <strong>${esc(project.config.title||'Untitled Book')}</strong>
+      <small>${esc(projectPen(project))} - ${esc(source)}<br>${fmt(project.metrics&&project.metrics.words)} words - ${chapters} sections${version}</small>
+    </button>`;
+  }).join(''):'<div class="empty">No books found for this pen.</div>';
+  document.querySelectorAll('[data-book]').forEach(btn=>btn.onclick=async()=>{
+    await ensureSaved();
+    const project=visibleProjects().find(item=>item.id===btn.dataset.book);
+    if(!project)return;
+    state.activeId=project.id;
+    state.currentFile=null;
+    render();
+    const chapter=readerStartChapter(project);
+    if(chapter)openFile(chapter.path);
+  });
+}
+function renderReaderHome(p){
+  const openFlags=p.flags.filter(f=>!f.done);
+  const plannedTotal=Number(p.config.chapters||p.chapters.length||1);
+  const draftPercent=plannedTotal?Math.min(100,Math.round((p.chapters.length/plannedTotal)*100)):0;
+  const draftComplete=plannedTotal>0&&p.chapters.length>=plannedTotal&&p.planned.length===0;
+  const chapters=p.chapters.slice().sort((a,b)=>a.num-b.num);
+  const continueChapter=readerStartChapter(p);
+  renderLibraryShelf(p);
+  $('reader-pen').textContent=projectPen(p);
+  $('reader-title').textContent=p.config.title||'Untitled Book';
+  $('reader-subtitle').textContent=`${fmt(p.metrics.words)} words · ${chapters.length} drafted chapters${draftComplete?' · Draft complete':''}`;
+  $('reader-progress-label').textContent=draftComplete?'Draft complete':'Manuscript progress';
+  $('reader-progress-note').textContent=`${chapters.length} of ${plannedTotal} planned chapters`;
+  $('reader-progress-fill').style.width=draftPercent+'%';
+  $('continue-reading').disabled=!continueChapter;
+  $('continue-reading').textContent=continueChapter?`Continue: Chapter ${continueChapter.num}`:'No chapters yet';
+  $('continue-reading').onclick=()=>{if(continueChapter)openFile(continueChapter.path)};
+  $('reader-export').onclick=()=>$('export').click();
+  $('reader-chapters').innerHTML=chapters.length?chapters.map(chapter=>`<button class="reader-chapter ${state.currentFile&&state.currentFile.path===chapter.path?'active':''}" data-read="${escAttr(chapter.path)}">
+    <span class="num">Ch. ${chapter.num}</span>
+    <span><strong>${esc(chapter.title||`Chapter ${chapter.num}`)}</strong><small>${esc(chapter.beat||chapter.file||'')}</small></span>
+    <span class="words">${fmt(chapter.words)} words</span>
+  </button>`).join(''):'<div class="empty">No manuscript chapters found.</div>';
+  document.querySelectorAll('[data-read]').forEach(btn=>btn.onclick=()=>openFile(btn.dataset.read));
+  $('reader-open-questions').innerHTML=openFlags.length?openFlags.slice(0,6).map(f=>`<div class="flag"><span>${esc(f.text)}${f.source==='progress'?' <small>(progress)</small>':''}</span><button class="ghost" data-dismiss-flag="${esc(f.id)}">Dismiss</button></div>`).join(''):'<div class="empty">No open notes.</div>';
+  document.querySelectorAll('#reader-open-questions [data-dismiss-flag]').forEach(btn=>btn.onclick=()=>dismissFlag(btn.dataset.dismissFlag));
+  renderDashboardApprovals(p);
+}
+function renderDashboard(p){
+  renderReaderHome(p);
+  return;
+  const openFlags=p.flags.filter(f=>!f.done);
+  const plannedTotal=Number(p.config.chapters||p.chapters.length||1);
+  const draftPercent=plannedTotal?Math.min(100,Math.round((p.chapters.length/plannedTotal)*100)):0;
+  $('m-words').textContent=fmt(p.metrics.words); $('m-target').textContent=p.metrics.target?`soft guide: ${fmt(p.metrics.target)}`:'current draft';
+  $('m-chapters').textContent=p.chapters.length; $('m-chapters-sub').textContent=`of ${p.config.chapters||p.chapters.length} planned`;
+  $('m-percent').textContent=draftPercent+'%'; $('m-fill').style.width=draftPercent+'%';
+  $('m-progress-note').textContent=`${p.chapters.length} of ${plannedTotal} planned chapters drafted. Word count is tracked as shape, not a hard finish line.`;
+  const acts=dashboardActs(p);
+  const current=acts.find(a=>a.drafted<a.total)||acts[acts.length-1]||null;
+  const draftComplete=plannedTotal>0&&p.chapters.length>=plannedTotal&&p.planned.length===0;
+  $('m-act').textContent=current?current.name:'No acts';
+  $('m-act-sub').textContent=current?current.subtitle:'Add acts in project.json';
+  $('m-status').textContent=draftComplete?'Draft Complete':(p.chapters.length?'Drafting':'Planning');
+  $('m-status-sub').textContent=openFlags.length?`${openFlags.length} open flags`:(draftComplete?'Ready for outside edits/export':'In progress');
+  $('act-progress').innerHTML=acts.length?acts.map(act=>`<div class="card">
+    <strong>${esc(act.name)}</strong>
+    <div class="s" style="font-size:12px;color:#71695f;margin-top:4px">${esc(act.subtitle)}</div>
+    <div class="bar" style="margin:12px 0 8px"><div class="fill" style="width:${act.percent}%;background:${act.complete?'#2f7d64':'#4879ad'}"></div></div>
+    <div style="font-size:12px;color:#625b52">${act.drafted} of ${act.total} chapters drafted</div>
+  </div>`).join(''):'';
+  const next=nextUsefulMove(p,openFlags);
+  $('next-move').innerHTML=`<strong>${esc(next.title)}</strong><br>${esc(next.detail)}`;
+  $('dash-flags').innerHTML=openFlags.length?openFlags.slice(0,5).map(f=>`<div class="flag"><span>${esc(f.text)}${f.source==='progress'?' <small>(progress)</small>':''}</span><button class="ghost" data-dismiss-flag="${esc(f.id)}">Dismiss</button></div>`).join(''):'<div class="empty">No open flags.</div>';
+  document.querySelectorAll('#dash-flags [data-dismiss-flag]').forEach(btn=>btn.onclick=()=>dismissFlag(btn.dataset.dismissFlag));
+  renderDashboardApprovals(p);
+  renderRunMonitor(p);
+  renderChapterHealth(p);
+  loadDashboardClaudeJobs().catch(()=>{});
+}
+function renderDashboardApprovals(p){
+  const pending=(p.canonDeltas||[]).filter(delta=>!['accepted','rejected'].includes(delta.status)&&delta.applied!==true);
+  $('reader-approvals').innerHTML=pending.length?`<h2>Approval Queue</h2>`+pending.slice(0,5).map(delta=>`<div class="rule-file">
+    <strong>${esc(delta.category)}${delta.chapter?' Â· Ch. '+delta.chapter:''}</strong>
+    <small style="display:block;color:#71695f;margin-top:2px">Target: ${esc(delta.targetSection||'Canon updates')}</small>
+    <p style="margin:6px 0;color:#3b352f">${esc(delta.text)}</p>
+    <div class="stage-row"><button data-delta-review="${esc(delta.id)}" data-action="approve">Approve</button><button data-delta-review="${esc(delta.id)}" data-action="reject">Reject</button></div>
+  </div>`).join(''):'';
+  document.querySelectorAll('#reader-approvals [data-delta-review]').forEach(btn=>btn.onclick=()=>reviewDelta(btn.dataset.deltaReview,btn.dataset.action));
+}
+function defaultActs(total){
+  const third=Math.ceil(total/3);
+  return [
+    {name:'Act One',start:1,end:Math.min(third,total),subtitle:'Setup'},
+    {name:'Act Two',start:Math.min(third+1,total),end:Math.min(third*2,total),subtitle:'Complication'},
+    {name:'Act Three',start:Math.min(third*2+1,total),end:total,subtitle:'Resolution'}
+  ].filter(a=>a.end>=a.start);
+}
+function dashboardActs(p){
+  const total=Number(p.config.chapters||p.chapters.length||30);
+  const acts=(Array.isArray(p.config.acts)&&p.config.acts.length?p.config.acts:defaultActs(total)).map((act,i)=>({
+    name:act.name||`Act ${i+1}`,
+    start:Number(act.start||1),
+    end:Number(act.end||total),
+    subtitle:act.subtitle||act.description||act.label||''
+  }));
+  const drafted=new Set(p.chapters.map(c=>c.num));
+  return acts.map(act=>{
+    const totalChapters=Math.max(0,act.end-act.start+1);
+    let count=0;
+    for(let n=act.start;n<=act.end;n++)if(drafted.has(n))count++;
+    return {...act,total:totalChapters,drafted:count,percent:totalChapters?Math.round((count/totalChapters)*100):0,complete:totalChapters>0&&count>=totalChapters};
+  });
+}
+function nextUsefulMove(p,openFlags){
+  const chapters=[...p.chapters,...p.planned].sort((a,b)=>a.num-b.num);
+  const pendingDelta=(p.canonDeltas||[]).find(delta=>!['accepted','rejected'].includes(delta.status)&&delta.applied!==true);
+  if(openFlags.length)return {title:'Resolve open flag',detail:openFlags[0].text};
+  if(pendingDelta)return {title:'Review canon delta',detail:`Chapter ${pendingDelta.chapter||'?'} · ${pendingDelta.category}: ${pendingDelta.text}`};
+  const planned=p.planned[0];
+  if(planned)return {title:`Draft Chapter ${planned.num}`,detail:planned.beat||'Start the next planned chapter.'};
+  const missingSummary=chapters.find(c=>!c.meta||!c.meta.summary);
+  if(missingSummary)return {title:`Summarize Chapter ${missingSummary.num}`,detail:missingSummary.beat||missingSummary.title||'Add the chapter summary so later passes have context.'};
+  const missingMetadata=chapters.find(c=>{
+    const m=c.meta||{};
+    return !m.pov&&!m.location&&!m.timeline&&!m.purpose;
+  });
+  if(missingMetadata)return {title:`Fill metadata for Chapter ${missingMetadata.num}`,detail:missingMetadata.beat||missingMetadata.title||'Add POV, location, timeline, and scene purpose.'};
+  const notFinal=p.chapters.find(c=>c.status!=='final');
+  if(notFinal)return {title:`Finalize Chapter ${notFinal.num}`,detail:notFinal.beat||notFinal.title||'All tracking is filled; move this chapter toward final.'};
+  return {title:'Draft complete',detail:'No major dashboard blockers. Check Readiness for export/submission prep.'};
+}
+function renderRunMonitor(p){
+  const monitor=p.runMonitor||{};
+  const latest=monitor.latestChapter;
+  const files=(monitor.recentFiles||[]).map(file=>`<div class="bible-item"><strong>${esc(file.path)}</strong><small>${timeAgo(file.modifiedAt)} · ${fmt(file.size)} bytes</small></div>`).join('');
+  $('run-monitor').className='';
+  $('run-monitor').innerHTML=`<div style="line-height:1.5;color:#3b352f"><strong>${esc(monitor.state||'Watching')}</strong><br>${esc(monitor.detail||'No recent drafting activity detected.')}</div>
+    <div class="monitor-grid">
+      <div class="monitor-pill"><span>Latest chapter</span><strong>${latest?`Ch. ${latest.num}`:'None'}</strong></div>
+      <div class="monitor-pill"><span>Canon approvals</span><strong>${fmt(monitor.pendingCanon||0)}</strong></div>
+      <div class="monitor-pill"><span>Open flags</span><strong>${fmt(monitor.openFlags||0)}</strong></div>
+    </div>
+    ${latest?`<div class="bible-item"><strong>${esc(latest.title)}</strong><small>${esc(latest.status)} · ${fmt(latest.words)} words · ${timeAgo(latest.updatedAt)}</small></div>`:''}
+    ${monitor.resumeSignal?`<div class="bible-item"><strong>Resume signal waiting</strong><small>${esc(monitor.resumeSignal.content)} · ${timeAgo(monitor.resumeSignal.modifiedAt)}</small></div>`:''}
+    <div style="margin-top:8px">${files||'<div class="empty">No recent files found.</div>'}</div>`;
+}
+function renderChapterHealth(p){
+  const rows=(p.chapterHealth||[]).slice().sort((a,b)=>a.num-b.num);
+  $('chapter-health').innerHTML=rows.length?rows.map(row=>{
+    const tags=[];
+    if(row.summary)tags.push('summary'); else tags.push('no summary');
+    if(row.metadata)tags.push('metadata'); else tags.push('no metadata');
+    if(row.pendingCanon)tags.push(`${row.pendingCanon} canon`);
+    const missing=Array.isArray(row.missing)&&row.missing.length;
+    return `<div class="health-row">
+      <strong>Ch. ${row.num}</strong>
+      <div><strong>${esc(row.title)}</strong><small>${esc(row.status)} · ${fmt(row.words)} words · ${timeAgo(row.updatedAt)}</small></div>
+      <div class="health-tags">${tags.map(tag=>`<span class="health-tag ${missing&&/^no |canon/.test(tag)?'warn':''}">${esc(tag)}</span>`).join('')}</div>
+    </div>`;
+  }).join(''):'<div class="empty">No drafted chapters yet.</div>';
+}
+function renderPipeline(p){
+  const all={planned:p.planned,drafting:[], 'self-edit':[], review:[], final:[]};
+  p.chapters.forEach(c=>(all[c.status]||all.review).push(c));
+  $('columns').innerHTML=stages.map(stage=>`<div class="col"><h3>${stageLabels[stage]} <span>${all[stage].length}</span></h3>${all[stage].map(chapterCard).join('')||'<div class="empty">Nothing here.</div>'}</div>`).join('');
+  document.querySelectorAll('[data-open]').forEach(btn=>btn.onclick=()=>openFile(btn.dataset.open));
+  document.querySelectorAll('[data-stage-file]').forEach(btn=>btn.onclick=()=>changeStage(btn.dataset.stageProject,btn.dataset.stageFile,btn.dataset.stage));
+  document.querySelectorAll('[data-create-chapter]').forEach(btn=>btn.onclick=()=>createChapter(Number(btn.dataset.createChapter)));
+}
+function chapterCard(c){
+  const p=active();
+  if(c.status==='planned')return `<div class="chapter" data-stage="planned"><strong>Chapter ${c.num}</strong><p>${esc(c.beat||'Planned chapter')}</p><button class="ghost" data-create-chapter="${c.num}">Start</button></div>`;
+  const buttons=stages.filter(s=>s!=='planned').map(s=>`<button class="${c.status===s?'on':''}" data-stage-project="${p.id}" data-stage-file="${c.file}" data-stage="${s}">${stageLabels[s]}</button>`).join('');
+  const m=c.meta||{};
+  const meta=[m.pov,m.location,m.timeline,m.readiness].filter(Boolean).join(' · ');
+  return `<div class="chapter" data-stage="${c.status}"><strong>${esc(c.title)}</strong><p>${esc(c.beat||c.file)}<br>${fmt(c.words)} words${meta?'<br>'+esc(meta):''}</p><div class="stage-row">${buttons}<button data-open="${c.path}">Open</button></div></div>`;
+}
+function renderFiles(p){
+  const groups={manuscript:'Chapters'};
+  $('files').innerHTML=Object.entries(groups).map(([key,label])=>{
+    const files=(p.files[key]||[]).map(f=>`<button class="file ${state.currentFile&&state.currentFile.path===f.path?'active':''}" data-file="${f.path}">${esc(f.name)}</button>`).join('');
+    return files?`<div class="file-group">${label}</div>${files}`:'';
+  }).join('')||'<div class="empty">No files yet.</div>';
+  document.querySelectorAll('[data-file]').forEach(btn=>btn.onclick=()=>openFile(btn.dataset.file));
+}
+function renderBrief(p){
+  $('brief-title').value=p.config.title||'';$('brief-pen-name').value=projectPen(p);$('brief-status').value=p.config.status||'active';$('brief-target').value=p.config.targetWords||90000;$('brief-chapters').value=p.config.chapters||30;$('brief-premise').value=p.config.premise||'';
+  const count=Number(p.config.chapters||30);let html='';
+  for(let i=1;i<=count;i++)html+=`<div class="field"><span>Chapter ${i}</span><input data-beat="${i}" value="${escAttr((p.config.beats||{})[String(i)]||'')}"></div>`;
+  $('beats').innerHTML=html;
+}
+function renderBibleControls(p){
+  const options=[...p.chapters,...p.planned].sort((a,b)=>a.num-b.num).map(c=>`<option value="${c.num}">Chapter ${c.num} - ${esc(c.beat||c.title||'')}</option>`).join('');
+  if($('session-chapter'))$('session-chapter').innerHTML=options;
+  if($('ai-chapter'))$('ai-chapter').innerHTML=options;
+  if($('claude-chapter'))$('claude-chapter').innerHTML='<option value="">Auto / next</option>'+options;
+  if($('dash-claude-chapter'))$('dash-claude-chapter').innerHTML='<option value="">Auto / next</option>'+options;
+  if($('delta-chapter'))$('delta-chapter').innerHTML='<option value="">No chapter</option>'+options;
+  loadSelectedMeta();
+}
+function selectedChapter(){
+  const p=active(); if(!p)return null;
+  const num=Number(($('session-chapter')&&$('session-chapter').value)||1);
+  return [...p.chapters,...p.planned].find(c=>c.num===num)||null;
+}
+function loadSelectedMeta(){
+  if(!$('session-chapter'))return;
+  const ch=selectedChapter(); const m=(ch&&ch.meta)||{};
+  $('session-next').value=m.nextMove||'';
+}
+async function loadReadiness(){
+  const p=active(); if(!p)return;
+  const d=await api('/api/readiness?projectId='+encodeURIComponent(p.id));
+  $('readiness-metrics').innerHTML=[
+    ['Score',d.score+'%'],
+    ['Open Flags',d.counts.openFlags],
+    ['Bible Cleanup',d.counts.openCleanup],
+    ['Missing Metadata',d.counts.missingMetadata]
+  ].map(([k,v])=>`<div class="card metric"><div class="k">${esc(k)}</div><div class="v">${esc(v)}</div></div>`).join('');
+  $('readiness-issues').innerHTML=d.issues.length?d.issues.map(x=>`<div class="bible-item"><strong>${esc(x)}</strong></div>`).join(''):'<div class="empty">No major blockers found.</div>';
+  $('readiness-health').innerHTML=[
+    ['Drafted chapters',d.counts.draftedChapters],
+    ['Final chapters',d.counts.finalChapters],
+    ['Missing summaries',d.counts.missingSummaries],
+    ['Missing metadata',d.counts.missingMetadata],
+    ['Editor returns',d.counts.editorReturns]
+  ].map(([k,v])=>`<div class="bible-item"><strong>${esc(k)}</strong><small>${esc(v)}</small></div>`).join('');
+  $('return-list').innerHTML=d.recentReturns.length?d.recentReturns.map(r=>`<div class="bible-item"><strong>${esc(r.label)} · ${esc(r.status)}</strong><small>${esc(r.returnedAt)} ${r.fileName?'· '+esc(r.fileName):''}</small><p style="margin:6px 0;color:#3b352f">${esc(r.notes||'')}</p></div>`).join(''):'<div class="empty">No editor returns logged yet.</div>';
+}
+async function saveEditorReturn(){
+  const p=active(); if(!p)return;
+  await api('/api/editor-returns',{method:'POST',body:JSON.stringify({projectId:p.id,return:{label:$('return-label').value,fileName:$('return-file').value,returnedAt:$('return-date').value,status:$('return-status').value,chapters:$('return-chapters').value,notes:$('return-notes').value}})});
+  ['return-label','return-file','return-chapters','return-notes'].forEach(id=>$(id).value='');
+  $('return-date').value='';
+  await loadReadiness();
+  toast('Editor return logged');
+}
+async function recordSession(){
+  await ensureSaved();
+  const p=active(); const ch=selectedChapter(); if(!p||!ch)return;
+  const flags=$('session-flags').value.split(/\n/).map(x=>x.trim()).filter(Boolean);
+  const canonDeltas=$('session-deltas').value.split(/\n/).map(x=>x.trim()).filter(Boolean).map(text=>({text,category:'general'}));
+  await api('/api/session',{method:'POST',body:JSON.stringify({projectId:p.id,chapter:ch.num,intent:$('session-intent').value,summary:$('session-summary').value,filesTouched:$('session-files').value,nextMove:$('session-next').value,flags,canonDeltas})});
+  $('session-summary').value='';$('session-files').value='';$('session-flags').value='';$('session-deltas').value='';
+  await refresh(); toast('Session recorded');
+}
+async function applyMetadataImport(){
+  await ensureSaved();
+  const p=active(); const ch=selectedChapter(); if(!p||!ch)return;
+  const content=$('metadata-import').value.trim();
+  if(!content)return;
+  try{JSON.parse(content.replace(/^```(?:json)?/i,'').replace(/```$/i,'').trim())}catch(e){toast('That is not valid JSON');return}
+  await api('/api/chapter/meta/import',{method:'POST',body:JSON.stringify({projectId:p.id,chapter:ch.num,content})});
+  $('metadata-import').value='';
+  await refresh();
+  toast('Metadata imported');
+}
+async function loadBible(){
+  const p=active(); if(!p)return;
+  $('bible-meta').textContent='Reading bible...';
+  try{
+    const bible=await api('/api/bible?projectId='+encodeURIComponent(p.id));
+    state.bible=bible;
+    if(!bible.found){$('bible-meta').innerHTML='<div class="empty">No bible DOCX found in this project folder.</div>';$('bible-list').innerHTML='';return}
+    $('bible-meta').innerHTML=`<strong>${esc(bible.file)}</strong><br><small>${bible.sections.length} sections · ${bible.rules.words.length} banned-word entries · ${bible.rules.constructions.length} banned-construction entries</small>`;
+    $('bible-list').innerHTML=bible.headings.map(h=>`<div class="bible-item"><strong>${esc(h.title)}</strong><small>${esc(h.level)}</small></div>`).join('');
+    await loadHealthAndDeltas();
+  }catch(e){$('bible-meta').textContent='Could not read bible: '+e.message}
+}
+async function loadHealthAndDeltas(){
+  const p=active(); if(!p)return;
+  const health=await api('/api/bible/health?projectId='+encodeURIComponent(p.id));
+  $('health-output').innerHTML=`<div class="grid dash-grid">
+    <div class="metric"><div class="k">Placeholders</div><div class="v">${health.counts.placeholders}</div><div class="s">in bible</div></div>
+    <div class="metric"><div class="k">Canon Deltas</div><div class="v">${health.counts.openDeltas}</div><div class="s">unresolved</div></div>
+    <div class="metric"><div class="k">Missing Summaries</div><div class="v">${health.counts.missingSummaries}</div><div class="s">chapters</div></div>
+    <div class="metric"><div class="k">Stale Bible</div><div class="v" style="font-size:20px">${health.staleBible?'Yes':'No'}</div><div class="s">content newer than bible</div></div>
+  </div>
+  ${health.placeholders.length?'<div style="margin-top:12px"><strong>Placeholders</strong>'+health.placeholders.slice(0,8).map(x=>`<div class="bible-item"><small>${esc(x.text)}</small></div>`).join('')+'</div>':''}
+  ${health.missingMetadata.length?'<div style="margin-top:12px"><strong>Missing metadata</strong><div class="empty">Chapters '+health.missingMetadata.slice(0,30).join(', ')+'</div></div>':''}`;
+  await loadCleanupQueue();
+  await loadDeltas();
+}
+function cleanupLabel(value){
+  return {'needs-decision':'Needs decision','ready-to-fill':'Ready to fill',handled:'Handled','ignore-for-now':'Ignore for now'}[value]||value;
+}
+async function loadCleanupQueue(){
+  const p=active(); if(!p)return;
+  const d=await api('/api/bible/cleanup?projectId='+encodeURIComponent(p.id));
+  const items=d.items||[];
+  const open=items.filter(x=>!['handled','ignore-for-now'].includes(x.status));
+  const counts=d.counts||{};
+  if(!items.length){$('cleanup-output').innerHTML='<div class="empty">No bible placeholders found. Suspiciously peaceful.</div>';return}
+  $('cleanup-output').innerHTML=`<div class="bible-item"><strong>${open.length} active cleanup items</strong><small>${esc(counts['needs-decision']||0)} needs decision · ${esc(counts['ready-to-fill']||0)} ready to fill · ${esc(counts.handled||0)} handled</small></div>`+
+    items.map(item=>`<div class="cleanup-item">
+      <strong>${esc(cleanupLabel(item.status))} · ${esc(item.category||'general')}</strong>
+      <p>${esc(item.text)}</p>
+      <div class="cleanup-row">
+        <select data-cleanup="${esc(item.id)}" data-field="status">
+          ${['needs-decision','ready-to-fill','handled','ignore-for-now'].map(v=>`<option value="${v}" ${item.status===v?'selected':''}>${esc(cleanupLabel(v))}</option>`).join('')}
+        </select>
+        <select data-cleanup="${esc(item.id)}" data-field="category">
+          ${['general','character','setting','timeline','relationship','plot','voice','market'].map(v=>`<option value="${v}" ${item.category===v?'selected':''}>${esc(v)}</option>`).join('')}
+        </select>
+        <input data-cleanup="${esc(item.id)}" data-field="note" value="${esc(item.note||'')}" placeholder="Note or decision">
+      </div>
+    </div>`).join('');
+  document.querySelectorAll('[data-cleanup]').forEach(el=>{
+    el.onchange=()=>updateCleanup(el.dataset.cleanup,el.dataset.field,el.value);
+    if(el.dataset.field==='note')el.onblur=()=>updateCleanup(el.dataset.cleanup,'note',el.value);
+  });
+}
+async function updateCleanup(id,field,value){
+  const p=active(); if(!p)return;
+  await api('/api/bible/cleanup',{method:'PUT',body:JSON.stringify({projectId:p.id,id,patch:{[field]:value}})});
+  toast('Cleanup item updated');
+  await loadCleanupQueue();
+}
+async function dismissFlag(id){
+  const p=active(); if(!p)return;
+  await api('/api/flag/toggle',{method:'POST',body:JSON.stringify({projectId:p.id,id})});
+  await refresh();
+  toast('Flag dismissed');
+}
+async function generateCleanupPacket(){
+  const p=active(); if(!p)return;
+  const d=await api('/api/bible/cleanup/packet?projectId='+encodeURIComponent(p.id));
+  $('cleanup-packet-output').value=d.content;
+  toast('Cleanup packet generated');
+}
+async function applyCleanupToBible(){
+  const p=active(); if(!p)return;
+  const d=await api('/api/bible/cleanup/apply',{method:'POST',body:JSON.stringify({projectId:p.id})});
+  await loadBible();
+  toast(`Applied ${d.replaced} Bible replacements`);
+}
+async function loadDeltas(){
+  const p=active(); if(!p)return;
+  const d=await api('/api/canon-deltas?projectId='+encodeURIComponent(p.id));
+  const open=d.deltas.filter(x=>!['accepted','rejected'].includes(x.status));
+  const resolved=d.deltas.filter(x=>['accepted','rejected'].includes(x.status)).slice(-5).reverse();
+  $('delta-list').innerHTML=open.length?open.map(delta=>`<div class="rule-file">
+    <strong>${esc(delta.category)}${delta.chapter?' · Ch. '+delta.chapter:''}</strong>
+    <small style="display:block;color:#71695f;margin-top:2px">Target: ${esc(delta.targetSection||'Canon updates')} · ${delta.applied?'Already applied':'Needs approval'}</small>
+    <p style="margin:6px 0;color:#3b352f">${esc(delta.text)}</p>
+    <div class="stage-row">
+      <button data-delta-review="${esc(delta.id)}" data-action="approve">Approve</button>
+      <button data-delta-review="${esc(delta.id)}" data-action="reject">Reject</button>
+      <button data-delta="${esc(delta.id)}" data-status="needs-alex" class="${delta.status==='needs-alex'?'on':''}">Needs Alex</button>
+    </div>
+  </div>`).join(''):'<div class="empty">No pending high-risk canon deltas.</div>';
+  if(resolved.length)$('delta-list').innerHTML+=`<div style="margin-top:12px"><strong>Recently resolved</strong>${resolved.map(delta=>`<div class="bible-item"><strong>${esc(delta.status)} · ${esc(delta.category)}${delta.chapter?' · Ch. '+delta.chapter:''}</strong><small>${esc(delta.targetSection||'')} ${delta.resolution?'· '+esc(delta.resolution):''}</small></div>`).join('')}</div>`;
+  document.querySelectorAll('[data-delta]').forEach(btn=>btn.onclick=()=>updateDelta(btn.dataset.delta,btn.dataset.status));
+  document.querySelectorAll('[data-delta-review]').forEach(btn=>btn.onclick=()=>reviewDelta(btn.dataset.deltaReview,btn.dataset.action));
+}
+async function addDelta(){
+  await ensureSaved();
+  const p=active(); if(!p||!$('delta-text').value.trim())return;
+  await api('/api/canon-deltas',{method:'POST',body:JSON.stringify({projectId:p.id,text:$('delta-text').value,category:$('delta-category').value,chapter:$('delta-chapter').value})});
+  $('delta-text').value='';
+  await loadHealthAndDeltas();
+  toast('Canon delta added');
+}
+async function updateDelta(id,status){
+  await ensureSaved();
+  const p=active(); if(!p)return;
+  await api('/api/canon-deltas',{method:'PUT',body:JSON.stringify({projectId:p.id,id,patch:{status}})});
+  await loadHealthAndDeltas();
+  toast('Canon delta updated');
+}
+async function reviewDelta(id,action){
+  const p=active(); if(!p)return;
+  const d=await api('/api/canon-deltas/review',{method:'POST',body:JSON.stringify({projectId:p.id,id,action})});
+  await refresh();
+  if(activeView()==='bible')await loadHealthAndDeltas();
+  toast(action==='approve'?`Approved into ${d.targetFile||'canon'}`:'Rejected delta');
+}
+async function runAssemble(){
+  await ensureSaved();
+  const p=active(); if(!p)return;
+  const options={
+    mode:$('assemble-mode').value,
+    format:$('assemble-format').value,
+    startChapter:$('assemble-start').value,
+    endChapter:$('assemble-end').value,
+    onlyFinal:$('assemble-final').checked,
+    includeText:$('assemble-text').checked,
+    includeChapterHeadings:$('assemble-headings').checked
+  };
+  const d=await api('/api/assemble',{method:'POST',body:JSON.stringify({projectId:p.id,options})});
+  $('assemble-preview').value=d.content||'';
+  const files=d.files&&d.files.length?d.files:[d];
+  $('assemble-result').innerHTML=files.map(file=>`Saved <strong>${esc(file.fileName||'export')}</strong><br><small>${esc(file.path||'')}</small>`).join('<br><br>');
+  await refresh();
+  toast('Export assembled');
+}
+async function generateAiContext(){
+  await ensureSaved();
+  const p=active(); if(!p)return;
+  const params=new URLSearchParams({
+    projectId:p.id,
+    mode:$('ai-mode').value,
+    chapter:$('ai-chapter').value||'1',
+    includeText:$('ai-include-text').checked?'1':'0',
+    textLimit:'6000'
+  });
+  $('ai-context-output').value='Generating context...';
+  const d=await api('/api/context?'+params.toString());
+  $('ai-context-output').value=d.content||'';
+}
+async function copyTextFrom(id,label='Copied'){
+  const text=$(id).value||$(id).textContent||'';
+  if(!text)return;
+  try{await navigator.clipboard.writeText(text);toast(label)}catch{
+    const el=$(id); if(el.select){el.focus();el.select();document.execCommand('copy');toast(label)}
+  }
+}
+async function runAi(){
+  await ensureSaved();
+  const p=active(); if(!p)return;
+  if(!$('ai-context-output').value||$('ai-context-output').value==='Generating context...')await generateAiContext();
+  $('ai-response-output').value='Asking AI...';
+  try{
+    const d=await api('/api/ai/run',{method:'POST',body:JSON.stringify({
+      projectId:p.id,
+      mode:$('ai-mode').value,
+      chapter:$('ai-chapter').value||'1',
+      includeText:$('ai-include-text').checked,
+      prompt:$('ai-prompt').value,
+      provider:$('ai-provider').value,
+      model:$('ai-model').value
+    })});
+    $('ai-context-output').value=d.context||$('ai-context-output').value;
+    $('ai-response-output').value=d.content||'';
+    toast('AI response ready');
+  }catch(e){
+    $('ai-response-output').value=e.message;
+    toast('AI request failed');
+  }
+}
+async function saveAiResponse(){
+  const p=active(); if(!p)return;
+  const content=$('ai-response-output').value.trim();
+  if(!content||content==='Asking AI...'){toast('No AI response to save');return}
+  const d=await api('/api/ai/save',{method:'POST',body:JSON.stringify({projectId:p.id,title:`${$('ai-provider').value} ${$('ai-mode').value} response`,content})});
+  toast('Saved '+d.fileName);
+  await refresh();
+}
+function updateAiModelDefault(){
+  if($('ai-provider').value==='openai'&&!/^gpt/.test($('ai-model').value))$('ai-model').value='gpt-4.1-mini';
+  if($('ai-provider').value==='anthropic'&&!/^claude/.test($('ai-model').value))$('ai-model').value='claude-3-5-sonnet-latest';
+  const isOpenRouter=$('ai-provider').value==='openrouter';
+  $('openrouter-model-tools').style.display=isOpenRouter?'block':'none';
+  if(isOpenRouter){
+    if(!$('ai-model').value.includes('/'))$('ai-model').value='anthropic/claude-3.5-sonnet';
+    loadOpenRouterModels().catch(e=>{$('openrouter-model-status').textContent=e.message});
+  }
+}
+function modelPriceLabel(model){
+  if(model.free)return 'free';
+  const p=model.promptPerMillion==null?'?':`$${model.promptPerMillion.toFixed(model.promptPerMillion<1?2:1)}`;
+  const c=model.completionPerMillion==null?'?':`$${model.completionPerMillion.toFixed(model.completionPerMillion<1?2:1)}`;
+  return `${p}/${c} per 1M`;
+}
+function modelContextLabel(model){
+  const n=Number(model.contextLength||0);
+  if(!n)return '? ctx';
+  if(n>=1000000)return `${(n/1000000).toFixed(1)}M ctx`;
+  if(n>=1000)return `${Math.round(n/1000)}k ctx`;
+  return `${n} ctx`;
+}
+async function loadOpenRouterModels({refresh=false}={}){
+  if($('ai-provider').value!=='openrouter')return;
+  $('openrouter-model-status').textContent='Loading models...';
+  const params=new URLSearchParams({
+    sort:$('openrouter-sort').value,
+    q:$('openrouter-search').value.trim(),
+    family:$('openrouter-family').value,
+    free:$('openrouter-free').checked?'1':'0',
+    refresh:refresh?'1':'0'
+  });
+  const d=await api('/api/openrouter/models?'+params.toString());
+  openRouterModels=d.models||[];
+  $('openrouter-models').innerHTML=openRouterModels.length?openRouterModels.map(model=>`<option value="${escAttr(model.id)}">${esc(model.name)} — ${esc(model.id)} — ${esc(modelPriceLabel(model))} — ${esc(modelContextLabel(model))}</option>`).join(''):'<option value="">No models found</option>';
+  if(openRouterModels.length){
+    const current=$('ai-model').value;
+    const found=openRouterModels.find(model=>model.id===current);
+    $('openrouter-models').value=found?current:openRouterModels[0].id;
+    if(!found||!current.includes('/'))$('ai-model').value=$('openrouter-models').value;
+  }
+  $('openrouter-model-status').textContent=`${openRouterModels.length} models${d.cachedAt?' · cached '+timeAgo(d.cachedAt):''}`;
+}
+function mcpConfigSnippet(config){
+  return JSON.stringify({
+    mcpServers:{
+      holdfast:{
+        command:'node',
+        args:[config.mcpServerPath||'mcp-server.js'],
+        env:{HOLDFAST_URL:config.mcpHoldfastUrl||'http://127.0.0.1:3217'}
+      }
+    }
+  },null,2);
+}
+function normalizePublicUrl(value){
+  return String(value||'').trim().replace(/\/+$/,'');
+}
+function connectorUrl(base, tokenValue=''){
+  const url=normalizePublicUrl(base);
+  if(!url)return '';
+  const token=String(tokenValue||'').trim();
+  return `${url}/mcp${token?`?token=${encodeURIComponent(token)}`:'?token=YOUR_MCP_TOKEN'}`;
+}
+function updateClaudeConnectorUrl(){
+  const token=($('config-mcp-token')&&$('config-mcp-token').value)||'';
+  $('claude-connector-url').value=connectorUrl($('claude-public-url').value,token);
+}
+async function loadClaudeControl(){
+  const d=await api('/api/config');
+  $('claude-public-url').value=d.mcpPublicUrl||'';
+  $('claude-command').value=d.claudeCommand||'claude';
+  $('claude-args-template').value=d.claudeArgsTemplate||'-p {prompt}';
+  updateClaudeConnectorUrl();
+  $('claude-connector-status').innerHTML=`<div class="bible-item"><strong>${d.secrets&&d.secrets.mcpAuth?'MCP token configured':'MCP token missing'}</strong><small>${d.secrets&&d.secrets.mcpAuth?'Claude can connect when you use the tokenized connector URL.':'Generate and save an MCP token in Config before exposing the app through ngrok.'}</small></div>`;
+  await loadClaudeJobs();
+}
+async function saveClaudeConfig(){
+  const payload={
+    MCP_PUBLIC_URL:$('claude-public-url').value,
+    CLAUDE_COMMAND:$('claude-command').value,
+    CLAUDE_ARGS_TEMPLATE:$('claude-args-template').value
+  };
+  await api('/api/config',{method:'PUT',body:JSON.stringify({config:payload})});
+  await loadClaudeControl();
+  toast('Claude config saved');
+}
+async function loadClaudeJobs(){
+  const p=active(); if(!p)return;
+  const d=await api('/api/claude/jobs?projectId='+encodeURIComponent(p.id));
+  const jobs=d.jobs||[];
+  $('claude-jobs').innerHTML=jobs.length?jobs.map(job=>`<div class="rule-file">
+    <strong>${esc(job.action)}${job.chapter?' Â· Ch. '+esc(job.chapter):''} Â· ${esc(job.status)}</strong>
+    <small style="display:block;color:#71695f;margin-top:2px">${esc(job.startedAt||'')} ${job.finishedAt?'Â· finished '+esc(job.finishedAt):''}${job.exitCode!==null&&job.exitCode!==undefined?' Â· exit '+esc(job.exitCode):''}</small>
+    ${job.output?`<textarea class="packet-box" readonly style="min-height:110px;margin-top:8px">${esc(job.output)}</textarea>`:''}
+    ${job.error?`<textarea class="packet-box" readonly style="min-height:90px;margin-top:8px;color:#9b2c15">${esc(job.error)}</textarea>`:''}
+    ${job.status==='running'?`<button class="ghost" data-cancel-claude="${esc(job.id)}" style="margin-top:8px">Cancel</button>`:''}
+  </div>`).join(''):'<div class="empty">No Claude jobs yet.</div>';
+  document.querySelectorAll('[data-cancel-claude]').forEach(btn=>btn.onclick=()=>cancelClaudeJob(btn.dataset.cancelClaude));
+}
+async function startClaudeJob(){
+  const p=active(); if(!p)return;
+  const action=$('claude-action').value;
+  const chapter=$('claude-chapter').value;
+  const extra=$('claude-extra').value;
+  const d=await api('/api/claude/run',{method:'POST',body:JSON.stringify({projectId:p.id,action,chapter,extra})});
+  $('claude-extra').value='';
+  await loadClaudeJobs();
+  await refresh();
+  toast(d.job&&d.job.status==='failed'?'Claude job failed to start':'Claude job started');
+}
+async function startDashboardClaudeJob(){
+  const p=active(); if(!p)return;
+  const d=await api('/api/claude/run',{method:'POST',body:JSON.stringify({
+    projectId:p.id,
+    action:$('dash-claude-action').value,
+    chapter:$('dash-claude-chapter').value,
+    extra:$('dash-claude-extra').value
+  })});
+  $('dash-claude-extra').value='';
+  await loadDashboardClaudeJobs();
+  await refresh();
+  toast(d.job&&d.job.status==='failed'?'Claude job failed to start':'Claude job started');
+}
+async function loadDashboardClaudeJobs(){
+  const p=active(); if(!p||!$('dashboard-claude-jobs'))return;
+  const d=await api('/api/claude/jobs?projectId='+encodeURIComponent(p.id));
+  const jobs=(d.jobs||[]).slice(0,5);
+  $('dashboard-claude-jobs').innerHTML=jobs.length?jobs.map(job=>`<div class="bible-item">
+    <strong>${esc(job.action)}${job.chapter?' Â· Ch. '+esc(job.chapter):''} Â· ${esc(job.status)}</strong>
+    <small>${esc(job.startedAt||'')}${job.finishedAt?' Â· finished '+esc(job.finishedAt):''}${job.error?' Â· has errors':''}</small>
+    ${job.status==='running'?`<button class="ghost" data-cancel-claude="${esc(job.id)}" style="margin-top:8px">Cancel</button>`:''}
+  </div>`).join(''):'<div class="empty">No Claude jobs yet.</div>';
+  document.querySelectorAll('#dashboard-claude-jobs [data-cancel-claude]').forEach(btn=>btn.onclick=()=>cancelClaudeJob(btn.dataset.cancelClaude));
+}
+async function cancelClaudeJob(id){
+  await api('/api/claude/cancel',{method:'POST',body:JSON.stringify({id})});
+  await loadClaudeJobs();
+  await loadDashboardClaudeJobs();
+  toast('Claude job cancelled');
+}
+async function loadConfig(){
+  const d=await api('/api/config');
+  $('settings-machine-name').value=state.settings.machineName||'Book Machine OS';
+  $('settings-author').value=state.settings.author||DEFAULT_PEN_NAME;
+  $('settings-path').value=d.settingsPath||'';
+  $('settings-pen-profiles').value=penProfiles().map(profile=>profile.repoPath?`${profile.name} | ${profile.repoPath}`:profile.name).join('\n');
+  $('settings-loose-libraries').value=(state.settings.looseLibraries||[]).map(library=>`${library.penName||state.settings.author||DEFAULT_PEN_NAME} | ${library.path||''}`).join('\n');
+  $('config-path').value=d.configPath||'';
+  $('config-port').value=d.port||'';
+  $('config-repo').value=d.repoPath||'';
+  $('config-library').value=d.holdfastLibrary||'';
+  $('config-web-email').value=d.webAuthEmail||'';
+  const labels=[['Discord webhook',d.secrets&&d.secrets.discord],['Anthropic',d.secrets&&d.secrets.anthropic],['OpenAI',d.secrets&&d.secrets.openai],['OpenRouter',d.secrets&&d.secrets.openrouter],['Claude MCP token',d.secrets&&d.secrets.mcpAuth],['Website login',d.secrets&&d.secrets.webAuth]];
+  $('config-secret-status').innerHTML=labels.map(([label,on])=>`<div class="bible-item"><strong>${esc(label)}</strong><small>${on?'Configured':'Not configured'}</small></div>`).join('');
+  $('config-result').innerHTML=`<div class="bible-item"><strong>Active project root</strong><small>${esc(d.activeRoot||'')}</small></div>`;
+  $('mcp-remote-url').value=d.mcpRemoteUrl||'http://localhost:3217/mcp';
+  $('mcp-auth-status').innerHTML=`<div class="bible-item"><strong>${d.secrets&&d.secrets.mcpAuth?'Token required':'No MCP token set'}</strong><small>${d.secrets&&d.secrets.mcpAuth?'Use ?token=YOUR_TOKEN on the HTTPS connector URL unless the client can send a Bearer token.':'Generate and save a token before exposing this through a tunnel or domain.'}</small></div>`;
+  $('mcp-config-snippet').value=mcpConfigSnippet(d);
+}
+function parsePenProfilesText(text){
+  return String(text||'').split(/\r?\n/).map(line=>line.trim()).filter(Boolean).map(line=>{
+    const parts=line.split('|');
+    return {name:(parts.shift()||'').trim(),repoPath:parts.join('|').trim()};
+  }).filter(profile=>profile.name);
+}
+function parseLooseLibrariesText(text){
+  return String(text||'').split(/\r?\n/).map(line=>line.trim()).filter(Boolean).map(line=>{
+    const parts=line.split('|');
+    return {penName:(parts.shift()||'').trim()||DEFAULT_PEN_NAME,path:parts.join('|').trim()};
+  }).filter(library=>library.path);
+}
+async function saveSettings(){
+  const penProfiles=parsePenProfilesText($('settings-pen-profiles').value);
+  const looseLibraries=parseLooseLibrariesText($('settings-loose-libraries').value);
+  const author=$('settings-author').value.trim()||DEFAULT_PEN_NAME;
+  if(!penProfiles.some(profile=>profile.name===author))penProfiles.unshift({name:author,repoPath:''});
+  const d=await api('/api/settings',{method:'PUT',body:JSON.stringify({settings:{machineName:$('settings-machine-name').value,author,penNames:penProfiles.map(profile=>profile.name),penProfiles,looseLibraries}})});
+  state.settings=d.settings||state.settings;
+  render();
+  await loadConfig();
+  toast('App identity saved');
+}
+async function saveConfig(){
+  const payload={
+    PORT:$('config-port').value,
+    REPO_PATH:$('config-repo').value,
+    HOLDFAST_LIBRARY:$('config-library').value,
+    DISCORD_WEBHOOK_URL:$('config-discord').value,
+    ANTHROPIC_API_KEY:$('config-anthropic').value,
+    OPENAI_API_KEY:$('config-openai').value,
+    OPENROUTER_API_KEY:$('config-openrouter').value,
+    MCP_AUTH_TOKEN:$('config-mcp-token').value,
+    WEB_AUTH_EMAIL:$('config-web-email').value,
+    WEB_AUTH_PASSWORD:$('config-web-password').value
+  };
+  const d=await api('/api/config',{method:'PUT',body:JSON.stringify({config:payload})});
+  ['config-discord','config-anthropic','config-openai','config-openrouter','config-mcp-token','config-web-password'].forEach(id=>$(id).value='');
+  await loadConfig();
+  $('config-result').innerHTML=`<div class="bible-item"><strong>Saved</strong><small>${esc(d.configPath||'')} · restart app if you changed port or paths.</small></div>`;
+  toast('Config saved');
+}
+function generateSecret(bytes=32){
+  const values=new Uint8Array(bytes);
+  crypto.getRandomValues(values);
+  return Array.from(values).map(value=>value.toString(16).padStart(2,'0')).join('');
+}
+async function loadSafety(){
+  const p=active(); if(!p)return;
+  $('git-status').textContent='Scanning repo...';
+  try{
+    const s=await api('/api/safety?projectId='+encodeURIComponent(p.id));
+    $('safety-metrics').innerHTML=[
+      ['Branch',s.git.branch],
+      ['Changed',s.git.files.length],
+      ['Flags',s.openFlags],
+      ['Deltas',s.openCanonDeltas]
+    ].map(([k,v])=>`<div class="card metric"><div class="k">${esc(k)}</div><div class="v" style="font-size:20px">${esc(v)}</div></div>`).join('');
+    $('git-status').innerHTML=`<div class="bible-item"><strong>${s.git.clean?'Working tree clean':'Working tree has changes'}</strong><small>${esc(s.git.lastCommit||'')}</small></div>`+
+      (s.git.files.length?s.git.files.map(f=>`<div class="bible-item"><strong>${esc(f.status)}</strong><small>${esc(f.path)}</small></div>`).join(''):'<div class="empty">No changed files.</div>');
+    $('diagnostics').innerHTML=[
+      ['Repo path',s.root],
+      ['Project path',s.projectPath],
+      ['Discord',s.discordConfigured?'Configured':'Not configured'],
+      ['Bible',s.bibleFound?'Found':'Missing'],
+      ['Chapters',`${s.chapterCount} drafted / ${s.plannedCount} planned`],
+      ['Missing summaries',s.missingSummaries],
+      ['Missing metadata',s.missingMetadata],
+      ['Scanned',new Date(s.scannedAt).toLocaleString()]
+    ].map(([k,v])=>`<div class="bible-item"><strong>${esc(k)}</strong><small>${esc(v)}</small></div>`).join('');
+    $('recent-files').innerHTML=s.recentFiles.length?s.recentFiles.map(f=>`<div class="bible-item"><strong>${esc(f.path)}</strong><small>${new Date(f.modifiedAt).toLocaleString()} · ${fmt(f.size)} bytes</small></div>`).join(''):'<div class="empty">No files found.</div>';
+  }catch(e){$('git-status').textContent='Git scan failed: '+e.message}
+}
+async function createSnapshot(){
+  await ensureSaved();
+  const p=active(); if(!p)return;
+  $('snapshot-result').textContent='Creating snapshot...';
+  const d=await api('/api/snapshot',{method:'POST',body:JSON.stringify({projectId:p.id})});
+  $('snapshot-result').innerHTML=`<div class="bible-item"><strong>${esc(d.fileName)}</strong><small>${d.files} files · ${fmt(d.size)} bytes</small></div>`;
+  await loadSafety();
+  toast('Snapshot created');
+}
+async function commitChanges(){
+  await ensureSaved();
+  const p=active(); if(!p)return;
+  const message=$('commit-message').value.trim();
+  if(!message){toast('Commit message required');return}
+  const d=await api('/api/git/commit',{method:'POST',body:JSON.stringify({projectId:p.id,message})});
+  $('commit-message').value='';
+  await loadSafety();
+  toast(d.clean?'Committed':'Commit complete');
+}
+function renderFlags(p){
+  const pending=(p.canonDeltas||[]).filter(delta=>!['accepted','rejected'].includes(delta.status)&&delta.applied!==true);
+  $('canon-approval-list').innerHTML=pending.length?pending.map(delta=>`<div class="rule-file">
+    <strong>${esc(delta.category)}${delta.chapter?' · Ch. '+delta.chapter:''}</strong>
+    <small style="display:block;color:#71695f;margin-top:2px">Target: ${esc(delta.targetSection||'Canon updates')}</small>
+    <p style="margin:6px 0;color:#3b352f">${esc(delta.text)}</p>
+    <div class="stage-row"><button data-delta-review="${esc(delta.id)}" data-action="approve">Approve</button><button data-delta-review="${esc(delta.id)}" data-action="reject">Reject</button></div>
+  </div>`).join(''):'<div class="empty">No pending canon approvals.</div>';
+  document.querySelectorAll('#canon-approval-list [data-delta-review]').forEach(btn=>btn.onclick=()=>reviewDelta(btn.dataset.deltaReview,btn.dataset.action));
+  $('flags-list').innerHTML=p.flags.length?p.flags.map(f=>`<div class="flag"><input type="checkbox" ${f.done?'checked':''} ${f.source==='progress'?'disabled title="Resolve this by editing sessions/progress.md"':''} data-flag="${f.id}"><span style="${f.done?'text-decoration:line-through;color:#71695f':''}">${esc(f.text)}${f.source==='progress'?' <small>(progress.md)</small>':''}</span></div>`).join(''):'<div class="empty">No flags yet.</div>';
+  document.querySelectorAll('[data-flag]:not(:disabled)').forEach(box=>box.onchange=async()=>{await api('/api/flag/toggle',{method:'POST',body:JSON.stringify({projectId:p.id,id:box.dataset.flag})});await refresh()});
+}
+function renderLog(p){
+  $('log-body').innerHTML=p.logs.slice().reverse().map(l=>`<tr><td>${esc(l.time)}</td><td>${esc(l.type)}</td><td>${esc(l.text)}</td></tr>`).join('')||'<tr><td colspan="3"><div class="empty">No activity yet.</div></td></tr>';
+}
+function resetReaderScroll(){
+  requestAnimationFrame(()=>{
+    const work=document.querySelector('.editor-work');
+    if(work)work.scrollTop=0;
+    if($('editor-text'))$('editor-text').scrollTop=0;
+    if($('preview-pane'))$('preview-pane').scrollTop=0;
+  });
+}
+async function openFile(path){await ensureSaved();const d=await api('/api/file?path='+encodeURIComponent(path));const p=active();state.currentFile={path,name:path.split('/').pop()};state.dirty=false;state.lastSavedAt=null;state.readerEdit=false;if(p)rememberReaderPath(p,path);$('file-name').textContent=readerChapterTitle(p,path)||state.currentFile.name;$('file-path').textContent=path;setEditorMarkdown(d.content);setReaderEdit(false);resetReaderScroll();updateEditorStats();updateSaveState('Reading');renderFiles(active());renderReaderNav();await view('editor');resetReaderScroll()}
+function readerChapterTitle(p,path){
+  if(!p)return '';
+  const chapter=p.chapters.find(item=>item.path===path);
+  return chapter?`Chapter ${chapter.num}: ${chapter.title||chapter.file}`:'';
+}
+function setReaderEdit(on){
+  if(on&&state.currentFile&&String(state.currentFile.path||'').startsWith('__loose_docx__/')){toast('Loose DOCX manuscripts are read-only');on=false}
+  state.readerEdit=Boolean(on);
+  $('editor-text').setAttribute('contenteditable',state.readerEdit?'true':'false');
+  $('edit-toggle').textContent=state.readerEdit?'Reading Mode':'Edit';
+  $('save').style.display=state.readerEdit?'inline-block':'none';
+  ['replace-text','replace-one','replace-all'].forEach(id=>{if($(id))$(id).style.display=state.readerEdit?'inline-block':'none'});
+  updateSaveState(state.readerEdit?'Editable':'Reading');
+}
+function renderReaderNav(){
+  const prev=readerChapterOffset(-1);
+  const next=readerChapterOffset(1);
+  $('read-prev').disabled=!prev;
+  $('read-next').disabled=!next;
+  $('read-prev').onclick=()=>{const chapter=readerChapterOffset(-1);if(chapter)openFile(chapter.path)};
+  $('read-next').onclick=()=>{const chapter=readerChapterOffset(1);if(chapter)openFile(chapter.path)};
+}
+function updateSaveState(label){
+  const time=state.lastSavedAt?` · ${state.lastSavedAt.toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})}`:'';
+  $('save-state').textContent=label+(label==='Saved'?time:'');
+}
+async function saveFile({silent=false}={}){
+  if(!state.currentFile||state.saving)return;
+  state.saving=true;updateSaveState('Saving...');
+  try{
+    await api('/api/file',{method:'POST',body:JSON.stringify({path:state.currentFile.path,content:editorMarkdown()})});
+    state.dirty=false;state.lastSavedAt=new Date();updateSaveState('Saved');if(!silent)toast('Saved');await refresh();
+  }catch(e){updateSaveState('Save failed');throw e}
+  finally{state.saving=false}
+}
+async function ensureSaved(){if(state.dirty)await saveFile({silent:true})}
+async function createChapter(number){await ensureSaved();const p=active();const d=await api('/api/chapter',{method:'POST',body:JSON.stringify({projectId:p.id,number})});await refresh();openFile(d.path)}
+async function changeStage(projectId,file,stage){await ensureSaved();await api('/api/stage',{method:'POST',body:JSON.stringify({projectId,file,stage})});await refresh()}
+function updateEditorStats(){const text=editorPlainText();const words=text.trim().split(/\s+/).filter(Boolean).length;$('word-count').textContent=fmt(words)+' words';$('char-count').textContent=fmt(text.length)+' characters'}
+function editorPlainText(){return $('editor-text').innerText||''}
+function inlineMarkdownToHtml(text){
+  return esc(text).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/(^|[^*])\*(?!\s)(.+?)(?<!\s)\*/g,'$1<em>$2</em>');
+}
+function markdownToEditorHtml(markdown){
+  const blocks=String(markdown||'').replace(/\r\n/g,'\n').split(/\n{2,}/);
+  return blocks.map(block=>{
+    if(!block.trim())return '';
+    if(/^###\s+/.test(block))return `<h3>${inlineMarkdownToHtml(block.replace(/^###\s+/,''))}</h3>`;
+    if(/^##\s+/.test(block))return `<h2>${inlineMarkdownToHtml(block.replace(/^##\s+/,''))}</h2>`;
+    if(/^#\s+/.test(block))return `<h1>${inlineMarkdownToHtml(block.replace(/^#\s+/,''))}</h1>`;
+    if(/^>\s*/m.test(block))return `<blockquote>${inlineMarkdownToHtml(block.replace(/^>\s*/gm,'')).replace(/\n/g,'<br>')}</blockquote>`;
+    return `<p>${inlineMarkdownToHtml(block).replace(/\n/g,'<br>')}</p>`;
+  }).join('');
+}
+function setEditorMarkdown(markdown){$('editor-text').innerHTML=markdownToEditorHtml(markdown)}
+function textFromNode(node){return node.textContent||''}
+function inlineNodeToMarkdown(node){
+  if(node.nodeType===Node.TEXT_NODE)return textFromNode(node);
+  if(node.nodeType!==Node.ELEMENT_NODE)return '';
+  const tag=node.tagName.toLowerCase();
+  if(tag==='br')return '\n';
+  const inner=[...node.childNodes].map(inlineNodeToMarkdown).join('');
+  if(tag==='strong'||tag==='b')return `**${inner}**`;
+  if(tag==='em'||tag==='i')return `*${inner}*`;
+  return inner;
+}
+function blockNodeToMarkdown(node){
+  if(node.nodeType===Node.TEXT_NODE)return textFromNode(node);
+  if(node.nodeType!==Node.ELEMENT_NODE)return '';
+  const tag=node.tagName.toLowerCase();
+  const text=[...node.childNodes].map(inlineNodeToMarkdown).join('').replace(/\n{3,}/g,'\n\n').trimEnd();
+  if(tag==='h1')return '# '+text;
+  if(tag==='h2')return '## '+text;
+  if(tag==='h3')return '### '+text;
+  if(tag==='blockquote')return text.split('\n').map(line=>'> '+line).join('\n');
+  return text;
+}
+function editorMarkdown(){
+  const nodes=[...$('editor-text').childNodes];
+  const markdown=nodes.map(blockNodeToMarkdown).filter(x=>x.trim()).join('\n\n');
+  return markdown.trimEnd()+(markdown.trim()?'\n':'');
+}
+function focusEditor(){const el=$('editor-text');el.focus();return el}
+function editorCommand(command,value=null){focusEditor();document.execCommand(command,false,value);markDirty();updateToolbarState()}
+function setBlock(format){editorCommand('formatBlock',format)}
+function markDirty(){if(!state.readerEdit)return;state.dirty=true;updateSaveState('Unsaved');updateEditorStats();clearTimeout(window.saveTimer);window.saveTimer=setTimeout(()=>saveFile({silent:true}).catch(()=>{}),1600)}
+function findNext(){
+  const q=$('find-text').value; if(!q)return; focusEditor(); window.find(q,false,false,true,false,false,false);
+}
+function replaceOne(){if(!state.readerEdit)return;const q=$('find-text').value; if(!q)return; const sel=window.getSelection(); if(!sel||sel.toString().toLowerCase()!==q.toLowerCase())findNext(); const nextSel=window.getSelection(); if(nextSel&&nextSel.toString().toLowerCase()===q.toLowerCase()){document.execCommand('insertText',false,$('replace-text').value);markDirty()}}
+function replaceAll(){if(!state.readerEdit)return;const q=$('find-text').value; if(!q)return; const re=new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi'); setEditorMarkdown(editorMarkdown().replace(re,$('replace-text').value)); markDirty()}
+function markdownPreview(text){
+  return esc(text).split(/\n{2,}/).map(block=>{
+    if(/^#\s+/.test(block))return `<h1>${block.replace(/^#\s+/,'')}</h1>`;
+    if(/^##\s+/.test(block))return `<h2>${block.replace(/^##\s+/,'')}</h2>`;
+    if(/^###\s+/.test(block))return `<h3>${block.replace(/^###\s+/,'')}</h3>`;
+    if(/^&gt;\s*/.test(block))return `<blockquote>${block.replace(/^&gt;\s*/gm,'').replace(/\n/g,'<br>')}</blockquote>`;
+    return `<p>${block.replace(/\n/g,'<br>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>')}</p>`;
+  }).join('');
+}
+function togglePreview(){
+  const work=document.querySelector('.editor-work'); const pane=$('preview-pane'); const on=!work.classList.contains('previewing');
+  if(on)pane.innerHTML=markdownPreview(editorMarkdown()); work.classList.toggle('previewing',on); pane.classList.toggle('active',on);
+}
+function updateToolbarState(){
+  if($('md-bold'))$('md-bold').classList.toggle('on',document.queryCommandState('bold'));
+  if($('md-italic'))$('md-italic').classList.toggle('on',document.queryCommandState('italic'));
+}
+async function checkCurrentRules(){
+  if(!state.currentFile)return; const p=active(); if(!p)return;
+  const d=await api('/api/rules?projectId='+encodeURIComponent(p.id)+'&path='+encodeURIComponent(state.currentFile.path));
+  const report=$('editor-rule-report'); const findings=(d.results[0]&&d.results[0].findings)||[];
+  report.style.display='block';
+  report.innerHTML=findings.length?`<div class="rule-file"><strong>Rule hits in ${esc(state.currentFile.name)}</strong><div>${findings.map(f=>`<span class="rule-hit">${esc(f.rule)} × ${f.count}</span>`).join('')}</div></div>`:'<div class="empty">No obvious rule hits in this file.</div>';
+}
+function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function escAttr(s){return esc(s).replace(/"/g,'&quot;')}
+
+document.querySelectorAll('.nav button').forEach(btn=>btn.onclick=()=>view(btn.dataset.view));
+initTheme();
+$('theme-toggle').onclick=()=>applyTheme(document.body.dataset.theme==='dark'?'light':'dark');
+$('editor-text').addEventListener('input',markDirty);
+$('editor-text').addEventListener('keyup',updateToolbarState);
+$('editor-text').addEventListener('mouseup',updateToolbarState);
+$('editor-text').addEventListener('paste',e=>{if(!state.readerEdit)return;e.preventDefault();document.execCommand('insertText',false,(e.clipboardData||window.clipboardData).getData('text/plain'));markDirty()});
+$('save').onclick=saveFile;
+if($('ed-undo'))$('ed-undo').onclick=()=>document.execCommand('undo');
+if($('ed-redo'))$('ed-redo').onclick=()=>document.execCommand('redo');
+if($('md-bold'))$('md-bold').onclick=()=>editorCommand('bold');
+if($('md-italic'))$('md-italic').onclick=()=>editorCommand('italic');
+if($('md-heading'))$('md-heading').onclick=()=>setBlock('h2');
+if($('md-quote'))$('md-quote').onclick=()=>setBlock('blockquote');
+$('find-next').onclick=findNext;
+$('replace-one').onclick=replaceOne;
+$('replace-all').onclick=replaceAll;
+$('edit-toggle').onclick=()=>setReaderEdit(!state.readerEdit);
+if($('ed-preview'))$('ed-preview').onclick=togglePreview;
+if($('ed-rules'))$('ed-rules').onclick=checkCurrentRules;
+$('editor-width').onchange=e=>{$('editor-text').style.width=e.target.value==='100%'?'100%':e.target.value+'px';$('preview-pane').style.width=$('editor-text').style.width};
+$('editor-size').onchange=e=>{$('editor-text').style.fontSize=e.target.value+'px';$('preview-pane').style.fontSize=e.target.value+'px'};
+window.addEventListener('beforeunload',e=>{if(state.dirty||state.saving){e.preventDefault();e.returnValue=''}});
+document.addEventListener('keydown',e=>{
+  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='s'){e.preventDefault();saveFile().catch(err=>toast(err.message))}
+  if(state.readerEdit&&document.activeElement===$('editor-text')&&(e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='b'){e.preventDefault();editorCommand('bold')}
+  if(state.readerEdit&&document.activeElement===$('editor-text')&&(e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='i'){e.preventDefault();editorCommand('italic')}
+});
+if($('new-chapter'))$('new-chapter').onclick=()=>{const p=active();createChapter((p.chapters.length+p.planned.length?Math.min(...p.planned.map(c=>c.num).concat([p.chapters.length+1])):1))};
+$('export').onclick=async()=>{await ensureSaved();const d=await api('/api/export',{method:'POST',body:JSON.stringify({projectId:active().id})});toast('Exported: '+((d.files||[]).map(f=>f.fileName).join(', ')||d.fileName));await refresh()};
+$('new-project').onclick=openNewProjectModal;
+$('pen-filter').onchange=async()=>{await ensureSaved();state.penFilter=$('pen-filter').value;const visible=visibleProjects();state.activeId=visible[0]?visible[0].id:null;state.currentFile=null;render()};
+document.querySelectorAll('[data-close]').forEach(btn=>btn.onclick=()=>$('project-modal').classList.remove('open'));
+$('np-chapters').onchange=renderNewProjectActs;
+$('np-pen-name').addEventListener('input',renderPenOptions);
+$('np-beat-map').onchange=()=>{$('np-custom-wrap').style.display=$('np-beat-map').value==='custom'?'block':'none'};
+$('create-project').onclick=async()=>{await ensureSaved();const payload={title:$('np-title').value,penName:$('np-pen-name').value,premise:$('np-premise').value,targetWords:$('np-target').value,chapters:$('np-chapters').value,acts:collectNewProjectActs(),beatMapType:$('np-beat-map').value,customBeats:$('np-custom-beats').value,storyBible:await selectedStoryBible()};const claudeAction=$('np-claude-action').value;const claudeExtra=$('np-claude-extra').value;const d=await api('/api/project',{method:'POST',body:JSON.stringify(payload)});state.penFilter=d.project.config&&d.project.config.penName||state.penFilter;state.activeId=d.project.id;$('project-modal').classList.remove('open');await refresh();if(claudeAction){await api('/api/claude/run',{method:'POST',body:JSON.stringify({projectId:d.project.id,action:claudeAction,chapter:claudeAction==='draft-chapter'?1:'',extra:claudeExtra})});await loadDashboardClaudeJobs();toast('Project created and Claude started')}else{toast(d.project.creation&&d.project.creation.commit&&d.project.creation.commit.ok?'Project created and committed':'Project created')}};
+$('save-brief').onclick=async()=>{await ensureSaved();await api('/api/project',{method:'PUT',body:JSON.stringify({projectId:active().id,patch:{title:$('brief-title').value,penName:$('brief-pen-name').value,status:$('brief-status').value,targetWords:$('brief-target').value,chapters:$('brief-chapters').value,premise:$('brief-premise').value}})});state.penFilter=$('brief-pen-name').value||state.penFilter;await refresh();toast('Project settings saved')};
+$('save-beats').onclick=async()=>{await ensureSaved();const beats={};document.querySelectorAll('[data-beat]').forEach(i=>beats[i.dataset.beat]=i.value);await api('/api/project',{method:'PUT',body:JSON.stringify({projectId:active().id,patch:{beats}})});await refresh();toast('Beats saved')};
+$('add-flag').onclick=async()=>{await ensureSaved();if(!$('flag-text').value.trim())return;await api('/api/flag',{method:'POST',body:JSON.stringify({projectId:active().id,text:$('flag-text').value})});$('flag-text').value='';await refresh();toast('Flag added')};
+$('cleanup-packet').onclick=generateCleanupPacket;
+$('apply-cleanup').onclick=applyCleanupToBible;
+$('add-delta').onclick=addDelta;
+$('assemble-run').onclick=runAssemble;
+$('ai-context-refresh').onclick=generateAiContext;
+$('ai-copy-context').onclick=()=>copyTextFrom('ai-context-output','Context copied');
+$('ai-run').onclick=runAi;
+$('ai-copy-response').onclick=()=>copyTextFrom('ai-response-output','Response copied');
+$('ai-save-response').onclick=saveAiResponse;
+$('ai-provider').onchange=updateAiModelDefault;
+$('ai-mode').onchange=()=>{if(activeView()==='ai')generateAiContext().catch(e=>toast(e.message))};
+$('ai-chapter').onchange=()=>{if(activeView()==='ai')generateAiContext().catch(e=>toast(e.message))};
+$('openrouter-models').onchange=()=>{$('ai-model').value=$('openrouter-models').value};
+$('openrouter-sort').onchange=()=>loadOpenRouterModels().catch(e=>toast(e.message));
+$('openrouter-family').onchange=()=>loadOpenRouterModels().catch(e=>toast(e.message));
+$('openrouter-free').onchange=()=>loadOpenRouterModels().catch(e=>toast(e.message));
+$('openrouter-refresh').onclick=()=>loadOpenRouterModels({refresh:true}).catch(e=>toast(e.message));
+$('openrouter-search').addEventListener('input',()=>{clearTimeout(window.openRouterSearchTimer);window.openRouterSearchTimer=setTimeout(()=>loadOpenRouterModels().catch(e=>toast(e.message)),350)});
+$('save-config').onclick=saveConfig;
+$('save-settings').onclick=saveSettings;
+$('generate-mcp-token').onclick=()=>{$('config-mcp-token').value=generateSecret();toast('MCP token generated. Save Config to use it.')};
+$('copy-mcp-url').onclick=()=>copyTextFrom('mcp-remote-url','Remote MCP URL copied');
+$('copy-mcp-config').onclick=()=>copyTextFrom('mcp-config-snippet','MCP config copied');
+$('refresh-mcp-config').onclick=loadConfig;
+$('save-claude-config').onclick=saveClaudeConfig;
+$('copy-claude-url').onclick=()=>copyTextFrom('claude-connector-url','Claude connector URL copied');
+$('refresh-claude').onclick=loadClaudeControl;
+$('start-claude-job').onclick=()=>startClaudeJob().catch(e=>toast(e.message));
+$('claude-open-flags').onclick=()=>view('flags');
+if($('dash-start-claude'))$('dash-start-claude').onclick=()=>startDashboardClaudeJob().catch(e=>toast(e.message));
+if($('dash-refresh-claude'))$('dash-refresh-claude').onclick=()=>loadDashboardClaudeJobs().catch(e=>toast(e.message));
+if($('dash-open-new-project'))$('dash-open-new-project').onclick=openNewProjectModal;
+$('claude-public-url').addEventListener('input',updateClaudeConnectorUrl);
+$('config-mcp-token').addEventListener('input',()=>{if($('claude-connector-url'))updateClaudeConnectorUrl()});
+$('refresh-safety').onclick=loadSafety;
+$('create-snapshot').onclick=createSnapshot;
+$('git-commit').onclick=commitChanges;
+$('save-return').onclick=saveEditorReturn;
+$('record-session').onclick=recordSession;
+$('apply-metadata').onclick=applyMetadataImport;
+$('session-chapter').onchange=loadSelectedMeta;
+$('search').addEventListener('input',async e=>{const q=e.target.value.trim();const box=$('search-results');if(q.length<2){box.style.display='none';return}const d=await api('/api/search?projectId='+encodeURIComponent(active().id)+'&q='+encodeURIComponent(q));box.style.display='block';box.innerHTML='<h2 style="margin:0 0 10px;font-size:17px">Search results</h2>'+(d.results.length?d.results.map(r=>`<button data-result="${r.path}"><strong>${esc(r.file)}:${r.line}</strong><br><small>${esc(r.text)}</small></button>`).join(''):'<div class="empty">No matches.</div>');document.querySelectorAll('[data-result]').forEach(btn=>btn.onclick=()=>openFile(btn.dataset.result))});
+refresh().then(()=>{window.liveRefreshTimer=setInterval(liveRefresh,5000)}).catch(err=>{document.body.innerHTML='<pre style="padding:24px">'+esc(err.message)+'</pre>'});
+</script>
+</body>
+</html>

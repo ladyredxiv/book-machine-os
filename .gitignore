@@ -1,0 +1,16 @@
+node_modules/
+dist/
+out/
+release/
+
+config/holdfast.env
+config/settings.json
+library/
+work/
+
+*.log
+*.tmp
+*.bak
+.DS_Store
+Thumbs.db
+
