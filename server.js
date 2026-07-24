@@ -25,6 +25,7 @@ let notifyTimer = null;
 let openRouterModelCache = null;
 let openRouterModelCacheAt = 0;
 const DEFAULT_PEN_NAME = 'Primary Pen';
+const RETIRED_PEN_NAMES = new Set(['R.A. Lorne']);
 const MCP_SERVER_INFO = { name: 'holdfast-book-machine', version: '0.2.0' };
 const CRC_TABLE = (() => {
   const table = new Array(256);
@@ -182,7 +183,7 @@ function dosDateTime(date = new Date()) {
 
 function readJson(file, fallback) {
   try {
-    return JSON.parse(fs.readFileSync(file, 'utf8'));
+    return JSON.parse(fs.readFileSync(file, 'utf8').replace(/^\uFEFF/, ''));
   } catch {
     return fallback;
   }
@@ -539,12 +540,14 @@ function getSettings() {
   };
   const legacySettingsPath = path.join(ROOT, 'settings.json');
   const settings = readJson(SETTINGS_PATH, null) || readJson(legacySettingsPath, fallback);
-  settings.author = settings.author || fallback.author;
+  settings.author = activePenName(settings.author, fallback.author);
   settings.machineName = settings.machineName || fallback.machineName;
-  settings.penNames = Array.from(new Set([settings.author, ...(Array.isArray(settings.penNames) ? settings.penNames : [])].filter(Boolean)));
+  settings.penNames = Array.from(new Set([settings.author, ...(Array.isArray(settings.penNames) ? settings.penNames : [])]
+    .map((name) => activePenName(name, ''))
+    .filter(Boolean)));
   const profileMap = new Map();
   (Array.isArray(settings.penProfiles) ? settings.penProfiles : []).forEach((profile) => {
-    const name = normalizeText(profile && profile.name).trim();
+    const name = activePenName(profile && profile.name, '');
     if (name) profileMap.set(name, { name, repoPath: normalizeText(profile.repoPath || profile.rootPath || '').trim() });
   });
   settings.penNames.forEach((name) => {
@@ -553,7 +556,7 @@ function getSettings() {
   settings.penProfiles = Array.from(profileMap.values());
   settings.looseLibraries = (Array.isArray(settings.looseLibraries) ? settings.looseLibraries : [])
     .map((item) => ({
-      penName: normalizeText(item && (item.penName || item.name || item.author)).trim() || settings.author,
+      penName: activePenName(item && (item.penName || item.name || item.author), settings.author),
       path: normalizeText(item && (item.path || item.rootPath || item.repoPath)).trim()
     }))
     .filter((item) => item.path);
@@ -564,18 +567,18 @@ function updateSettings(patch) {
   const current = getSettings();
   const next = { ...current };
   if (patch.machineName !== undefined) next.machineName = normalizeText(patch.machineName).trim() || current.machineName;
-  if (patch.author !== undefined) next.author = normalizeText(patch.author).trim() || current.author;
+  if (patch.author !== undefined) next.author = activePenName(patch.author, current.author);
   if (patch.penNames !== undefined) {
     const names = Array.isArray(patch.penNames) ? patch.penNames : String(patch.penNames || '').split(/\r?\n|,/);
-    next.penNames = Array.from(new Set([next.author, ...names.map((name) => normalizeText(name).trim()).filter(Boolean)]));
+    next.penNames = Array.from(new Set([next.author, ...names.map((name) => activePenName(name, '')).filter(Boolean)]));
   } else {
-    next.penNames = Array.from(new Set([next.author, ...(next.penNames || [])].filter(Boolean)));
+    next.penNames = Array.from(new Set([next.author, ...(next.penNames || []).map((name) => activePenName(name, '')).filter(Boolean)]));
   }
   if (patch.penProfiles !== undefined) {
     const profiles = Array.isArray(patch.penProfiles) ? patch.penProfiles : [];
     const profileMap = new Map();
     profiles.forEach((profile) => {
-      const name = normalizeText(profile && profile.name).trim();
+      const name = activePenName(profile && profile.name, '');
       if (name) profileMap.set(name, { name, repoPath: normalizeText(profile.repoPath || profile.rootPath || '').trim() });
     });
     next.penNames.forEach((name) => {
@@ -591,13 +594,22 @@ function updateSettings(patch) {
   if (patch.looseLibraries !== undefined) {
     next.looseLibraries = (Array.isArray(patch.looseLibraries) ? patch.looseLibraries : [])
       .map((item) => ({
-        penName: normalizeText(item && (item.penName || item.name || item.author)).trim() || next.author,
+        penName: activePenName(item && (item.penName || item.name || item.author), next.author),
         path: normalizeText(item && (item.path || item.rootPath || item.repoPath)).trim()
       }))
       .filter((item) => item.path);
   }
   writeJson(SETTINGS_PATH, next);
   return next;
+}
+
+function isRetiredPenName(name) {
+  return RETIRED_PEN_NAMES.has(normalizeText(name).trim());
+}
+
+function activePenName(name, fallback = DEFAULT_PEN_NAME) {
+  const cleaned = normalizeText(name).trim();
+  return cleaned && !isRetiredPenName(cleaned) ? cleaned : fallback;
 }
 
 function projectRoots() {
@@ -619,7 +631,6 @@ function penNameForProjectRoot(root) {
   const settings = getSettings();
   const profile = settings.penProfiles.find((item) => item.repoPath && path.resolve(item.repoPath) === resolved);
   if (profile) return profile.name;
-  if (resolved === path.resolve(PROJECTS_ROOT)) return settings.author || DEFAULT_PEN_NAME;
   return '';
 }
 
@@ -780,13 +791,18 @@ function listMarkdownFiles(dir, projectId, bucket) {
     }));
 }
 
-function projectFilePath(projectId, bucket, name) {
+function projectFilePathFromRelative(projectId, relativePath) {
   const dir = path.resolve(projectDir(projectId));
   const defaultRoot = path.resolve(PROJECTS_ROOT);
+  const clean = String(relativePath || '').replace(/\\/g, '/').replace(/^\/+/, '');
   if (path.dirname(dir) === defaultRoot) {
-    return REPO_MODE ? `${projectId}/${bucket}/${name}` : `projects/${projectId}/${bucket}/${name}`;
+    return REPO_MODE ? `${projectId}/${clean}` : `projects/${projectId}/${clean}`;
   }
-  return `${VIRTUAL_PROJECT_PREFIX}/${projectId}/${bucket}/${name}`;
+  return `${VIRTUAL_PROJECT_PREFIX}/${projectId}/${clean}`;
+}
+
+function projectFilePath(projectId, bucket, name) {
+  return projectFilePathFromRelative(projectId, `${bucket}/${name}`);
 }
 
 function resolveRelativeFile(relativePath) {
@@ -1574,26 +1590,88 @@ function toggleQualityGate(projectId, chapterNumber, gate, value) {
   return saveChapterMeta(projectId, chapterNumber, { gates: { [gate]: nextValue } });
 }
 
+function chapterNumberFromName(name, fallback = 0) {
+  const base = path.basename(String(name || ''), path.extname(String(name || ''))).toLowerCase();
+  const match = base.match(/(?:^|[^a-z])(?:chapter|chap|ch)?\.?\s*[-_ ]*(\d{1,3})(?:\b|[^a-z])/i)
+    || base.match(/^(\d{1,3})(?:\b|[^a-z])/);
+  return match ? Number(match[1]) : fallback;
+}
+
+function isLikelyManuscriptMarkdown(file) {
+  const name = path.basename(file).toLowerCase();
+  if (!/\.(md|txt)$/i.test(name)) return false;
+  if (name === 'placeholder.md') return false;
+  if (/editorial-state|session-log|progress|flags|readme|outline|bible|metadata|canon-deltas|scenes/i.test(name)) return false;
+  return true;
+}
+
+function walkMarkdownFiles(dir, baseDir, maxDepth = 4, depth = 0) {
+  if (depth > maxDepth || !fs.existsSync(dir)) return [];
+  let entries = [];
+  try {
+    entries = fs.readdirSync(dir, { withFileTypes: true });
+  } catch {
+    return [];
+  }
+  return entries.flatMap((entry) => {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      if (/^(\.|node_modules|\.git|exports|snapshots)$/i.test(entry.name)) return [];
+      return walkMarkdownFiles(full, baseDir, maxDepth, depth + 1);
+    }
+    if (!entry.isFile() || !isLikelyManuscriptMarkdown(entry.name)) return [];
+    const stat = fs.statSync(full);
+    return [{
+      full,
+      relative: path.relative(baseDir, full).replace(/\\/g, '/'),
+      name: entry.name,
+      updatedAt: stat.mtime.toISOString()
+    }];
+  });
+}
+
+function discoverManuscriptMarkdownFiles(projectId) {
+  const root = projectDir(projectId);
+  const preferredDirs = ['manuscript', 'chapters', 'chapter', 'draft', 'drafts', 'sections']
+    .map((name) => path.join(root, name))
+    .filter((dir) => fs.existsSync(dir));
+  const found = preferredDirs.flatMap((dir) => walkMarkdownFiles(dir, root));
+  if (!found.length) {
+    return fs.readdirSync(root, { withFileTypes: true })
+      .filter((entry) => entry.isFile() && isLikelyManuscriptMarkdown(entry.name))
+      .map((entry) => {
+        const full = path.join(root, entry.name);
+        const stat = fs.statSync(full);
+        return {
+          full,
+          relative: entry.name,
+          name: entry.name,
+          updatedAt: stat.mtime.toISOString()
+        };
+      })
+      .sort((a, b) => a.relative.localeCompare(b.relative, undefined, { numeric: true }));
+  }
+  return found.sort((a, b) => a.relative.localeCompare(b.relative, undefined, { numeric: true }));
+}
+
 function getChapters(id, config) {
-  const dir = path.join(projectDir(id), 'manuscript');
   const metaMap = getChapterMeta(id);
-  const files = fs.existsSync(dir) ? fs.readdirSync(dir).filter((name) => /chapter-\d+.*\.md$/i.test(name)) : [];
-  const chapters = files.map((file) => {
-    const text = fs.readFileSync(path.join(dir, file), 'utf8');
-    const match = file.match(/(\d+)/);
-    const num = match ? Number(match[1]) : 0;
+  const files = discoverManuscriptMarkdownFiles(id);
+  const chapters = files.map((file, index) => {
+    const text = fs.readFileSync(file.full, 'utf8');
+    const num = chapterNumberFromName(file.relative, index + 1) || index + 1;
     return {
       num,
-      file,
-      path: projectFilePath(id, 'manuscript', file),
-      title: firstHeading(text) || `Chapter ${num || '?'}`,
+      file: path.basename(file.relative),
+      path: projectFilePathFromRelative(id, file.relative),
+      title: firstHeading(text) || path.basename(file.name, path.extname(file.name)).replace(/[-_]+/g, ' '),
       beat: config.beats && config.beats[String(num)] || '',
       status: statusFrom(text, 'review'),
       words: wordCount(stripStatus(text)),
       meta: metaFor(metaMap, num),
-      updatedAt: fs.statSync(path.join(dir, file)).mtime.toISOString()
+      updatedAt: file.updatedAt
     };
-  }).sort((a, b) => a.num - b.num || a.file.localeCompare(b.file));
+  }).sort((a, b) => a.num - b.num || a.path.localeCompare(b.path, undefined, { numeric: true }));
 
   const written = new Set(chapters.map((chapter) => chapter.num));
   const planned = [];
@@ -1974,8 +2052,9 @@ function getProject(id, rootHint = '') {
   if (inferredPenName && config.penName !== inferredPenName) {
     config.penName = inferredPenName;
     writeJson(configFile, config);
-  } else if (!config.penName) {
+  } else if (!config.penName || isRetiredPenName(config.penName)) {
     config.penName = getSettings().author || DEFAULT_PEN_NAME;
+    writeJson(configFile, config);
   }
   const { chapters, planned } = getChapters(id, config);
   const words = chapters.reduce((sum, chapter) => sum + chapter.words, 0);
