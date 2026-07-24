@@ -740,6 +740,8 @@ function createProject(input) {
     id,
     title,
     penName,
+    series: normalizeText(input.series || input.seriesName || '').trim(),
+    seriesPosition: Number(input.seriesPosition || input.seriesNumber || input.bookNumber || 0),
     status: 'active',
     premise: String(input.premise || ''),
     targetWords: Number(input.targetWords || 90000),
@@ -3273,9 +3275,12 @@ function updateConfig(projectId, patch) {
   const project = getProject(projectId);
   if (!project) throw new Error('Project not found');
   const next = { ...project.config };
-  ['title', 'premise', 'status', 'penName'].forEach((key) => {
+  ['title', 'premise', 'status', 'penName', 'series', 'seriesName'].forEach((key) => {
     if (patch[key] !== undefined) next[key] = String(patch[key]);
   });
+  if (patch.seriesPosition !== undefined || patch.seriesNumber !== undefined || patch.bookNumber !== undefined) {
+    next.seriesPosition = Number(patch.seriesPosition || patch.seriesNumber || patch.bookNumber || 0);
+  }
   if (patch.targetWords !== undefined) next.targetWords = Number(patch.targetWords || next.targetWords);
   if (patch.chapters !== undefined) next.chapters = Number(patch.chapters || next.chapters);
   if (patch.beats && typeof patch.beats === 'object') next.beats = { ...(next.beats || {}), ...patch.beats };
