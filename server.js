@@ -1077,6 +1077,8 @@ function getLooseProjects() {
       config: {
         title: manifest[id] && manifest[id].title || titleFromFolder(dir),
         penName: library.penName,
+        series: manifest[id] && manifest[id].series || '',
+        seriesPosition: Number(manifest[id] && manifest[id].seriesPosition || 0),
         status: 'read-only',
         chapters: chapters.length
       },
@@ -3288,6 +3290,35 @@ function updateConfig(projectId, patch) {
   addLog(projectId, 'update', 'Project brief updated');
 }
 
+function updateLibraryMetadata(items) {
+  const manifest = getLooseManifest();
+  const updated = [];
+  (Array.isArray(items) ? items : []).forEach((item) => {
+    const projectId = resolveProjectId(item.projectId || item.id || '');
+    if (!projectId) return;
+    const patch = {
+      series: normalizeText(item.series || item.seriesName || '').trim(),
+      seriesPosition: Number(item.seriesPosition || item.seriesNumber || item.bookNumber || 0)
+    };
+    const loose = getLooseProject(projectId);
+    if (loose && loose.kind === 'loose-docx') {
+      manifest[projectId] = {
+        ...(manifest[projectId] || {}),
+        series: patch.series,
+        seriesPosition: patch.seriesPosition
+      };
+      updated.push(projectId);
+      return;
+    }
+    if (getProject(projectId)) {
+      updateConfig(projectId, patch);
+      updated.push(projectId);
+    }
+  });
+  saveLooseManifest(manifest);
+  return { ok: true, updated };
+}
+
 function addFlag(projectId, text) {
   const file = path.join(projectDir(projectId), 'sessions', 'flags.md');
   ensureDir(path.dirname(file));
@@ -3625,6 +3656,9 @@ async function api(req, res, url) {
   if (url.pathname === '/api/project' && req.method === 'PUT') {
     updateConfig(body.projectId, body.patch || {});
     return send(res, 200, { project: getProject(body.projectId) });
+  }
+  if (url.pathname === '/api/library/meta' && req.method === 'PUT') {
+    return send(res, 200, updateLibraryMetadata(body.items || []));
   }
   if (url.pathname === '/api/chapter' && req.method === 'POST') {
     return send(res, 200, createChapter(body.projectId, body.number, body.title));
