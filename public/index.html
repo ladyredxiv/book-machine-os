@@ -1628,7 +1628,7 @@ $('record-session').onclick=recordSession;
 $('apply-metadata').onclick=applyMetadataImport;
 $('session-chapter').onchange=loadSelectedMeta;
 $('search').addEventListener('input',async e=>{const q=e.target.value.trim();const box=$('search-results');if(q.length<2){box.style.display='none';return}const d=await api('/api/search?projectId='+encodeURIComponent(active().id)+'&q='+encodeURIComponent(q));box.style.display='block';box.innerHTML='<h2 style="margin:0 0 10px;font-size:17px">Search results</h2>'+(d.results.length?d.results.map(r=>`<button data-result="${r.path}"><strong>${esc(r.file)}:${r.line}</strong><br><small>${esc(r.text)}</small></button>`).join(''):'<div class="empty">No matches.</div>');document.querySelectorAll('[data-result]').forEach(btn=>btn.onclick=()=>openFile(btn.dataset.result))});
-refresh().then(()=>{window.liveRefreshTimer=setInterval(liveRefresh,5000)}).catch(err=>{document.body.innerHTML='<pre style="padding:24px">'+esc(err.message)+'</pre>'});
+refresh().then(()=>{window.liveRefreshTimer=setInterval(liveRefresh,15000)}).catch(err=>{document.body.innerHTML='<pre style="padding:24px">'+esc(err.message)+'</pre>'});
 </script>
 </body>
 </html>

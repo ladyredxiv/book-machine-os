@@ -18,6 +18,7 @@ const CONFIG_PATH = process.env.HOLDFAST_CONFIG_PATH || path.join(__dirname, 'co
 const SETTINGS_PATH = process.env.HOLDFAST_SETTINGS_PATH || path.join(path.dirname(CONFIG_PATH), 'settings.json');
 const VIRTUAL_PROJECT_PREFIX = '__pen_projects__';
 const PROJECT_SCAN_MAX_DEPTH = 5;
+const PROJECT_DIR_CACHE_MS = 30000;
 const notifiedFlags = new Set();
 const webSessions = new Map();
 const mcpEvents = [];
@@ -25,6 +26,7 @@ const claudeJobs = new Map();
 let notifyTimer = null;
 let openRouterModelCache = null;
 let openRouterModelCacheAt = 0;
+let projectDirCache = { at: 0, key: '', dirs: [], byId: new Map(), byBase: new Map() };
 const DEFAULT_PEN_NAME = 'Primary Pen';
 const RETIRED_PEN_NAMES = new Set(['R.A. Lorne']);
 const MCP_SERVER_INFO = { name: 'holdfast-book-machine', version: '0.2.0' };
@@ -601,6 +603,7 @@ function updateSettings(patch) {
       .filter((item) => item.path);
   }
   writeJson(SETTINGS_PATH, next);
+  clearProjectDirCache();
   return next;
 }
 
@@ -611,6 +614,10 @@ function isRetiredPenName(name) {
 function activePenName(name, fallback = DEFAULT_PEN_NAME) {
   const cleaned = normalizeText(name).trim();
   return cleaned && !isRetiredPenName(cleaned) ? cleaned : fallback;
+}
+
+function clearProjectDirCache() {
+  projectDirCache = { at: 0, key: '', dirs: [], byId: new Map(), byBase: new Map() };
 }
 
 function projectRoots() {
@@ -661,15 +668,30 @@ function walkProjectDirs(root, maxDepth = PROJECT_SCAN_MAX_DEPTH) {
   return found;
 }
 
+function cachedProjectDirs({ force = false } = {}) {
+  const roots = projectRoots();
+  const key = roots.join('|');
+  if (!force && projectDirCache.key === key && Date.now() - projectDirCache.at < PROJECT_DIR_CACHE_MS) {
+    return projectDirCache.dirs;
+  }
+  const dirs = roots.flatMap((root) => walkProjectDirs(root));
+  const byId = new Map();
+  const byBase = new Map();
+  dirs.forEach((dir) => {
+    const base = path.basename(dir);
+    if (!byBase.has(base)) byBase.set(base, dir);
+    const config = readJson(path.join(dir, 'project.json'), null);
+    if (config && config.id && !byId.has(config.id)) byId.set(config.id, dir);
+  });
+  projectDirCache = { at: Date.now(), key, dirs, byId, byBase };
+  return dirs;
+}
+
 function findProjectDir(id) {
   const wanted = String(id || '').trim();
   if (!wanted) return null;
-  return projectRoots().flatMap((root) => walkProjectDirs(root))
-    .find((dir) => {
-      if (path.basename(dir) === wanted) return true;
-      const config = readJson(path.join(dir, 'project.json'), null);
-      return config && config.id === wanted;
-    }) || null;
+  cachedProjectDirs();
+  return projectDirCache.byId.get(wanted) || projectDirCache.byBase.get(wanted) || null;
 }
 
 function projectDir(id, penName = '') {
@@ -789,6 +811,7 @@ function createProject(input) {
   };
 
   writeJson(configPath(id, penName), config);
+  clearProjectDirCache();
   ['manuscript', 'characters', 'sessions', 'worldbuilding', 'outlines'].forEach((name) => {
     fs.writeFileSync(path.join(dir, name, 'placeholder.md'), `# ${title} - ${name}\n\nPlaceholder. Replace with content.\n`, 'utf8');
   });
@@ -2175,8 +2198,8 @@ function inferredSeriesForProjectDir(dir) {
 }
 
 function getProjects() {
-  const cleanProjects = projectRoots().flatMap((root) => walkProjectDirs(root)
-    .map((dir) => getProject(path.basename(dir), path.dirname(dir))))
+  const cleanProjects = cachedProjectDirs()
+    .map((dir) => getProject(path.basename(dir), path.dirname(dir)))
     .filter(Boolean)
     .filter((project, index, projects) => projects.findIndex((other) => other.id === project.id) === index)
     .sort((a, b) => a.config.title.localeCompare(b.config.title));
@@ -3879,7 +3902,7 @@ server.listen(PORT, () => {
       } catch (error) {
         console.log('Flag scan failed:', error.message);
       }
-    }, 5000);
+    }, 30000);
   } catch (error) {
     console.log('Flag notification setup failed:', error.message);
   }
