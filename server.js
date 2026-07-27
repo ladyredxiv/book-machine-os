@@ -17,6 +17,7 @@ const LOOSE_DOCX_PREFIX = '__loose_docx__';
 const CONFIG_PATH = process.env.HOLDFAST_CONFIG_PATH || path.join(__dirname, 'config', 'holdfast.env');
 const SETTINGS_PATH = process.env.HOLDFAST_SETTINGS_PATH || path.join(path.dirname(CONFIG_PATH), 'settings.json');
 const VIRTUAL_PROJECT_PREFIX = '__pen_projects__';
+const PROJECT_SCAN_MAX_DEPTH = 5;
 const notifiedFlags = new Set();
 const webSessions = new Map();
 const mcpEvents = [];
@@ -629,16 +630,51 @@ function projectRootForPen(penName) {
 function penNameForProjectRoot(root) {
   const resolved = path.resolve(root);
   const settings = getSettings();
-  const profile = settings.penProfiles.find((item) => item.repoPath && path.resolve(item.repoPath) === resolved);
+  const profile = settings.penProfiles
+    .filter((item) => item.repoPath)
+    .map((item) => ({ ...item, resolved: path.resolve(item.repoPath) }))
+    .filter((item) => resolved === item.resolved || resolved.startsWith(item.resolved + path.sep))
+    .sort((a, b) => b.resolved.length - a.resolved.length)[0];
   if (profile) return profile.name;
   return '';
 }
 
+function walkProjectDirs(root, maxDepth = PROJECT_SCAN_MAX_DEPTH) {
+  const found = [];
+  const visit = (dir, depth) => {
+    if (depth > maxDepth || !fs.existsSync(dir)) return;
+    let entries = [];
+    try {
+      entries = fs.readdirSync(dir, { withFileTypes: true });
+    } catch {
+      return;
+    }
+    if (fs.existsSync(path.join(dir, 'project.json'))) {
+      found.push(dir);
+      return;
+    }
+    entries
+      .filter((entry) => entry.isDirectory() && !/^(\.|node_modules|dist|out|build|exports|snapshots)$/i.test(entry.name))
+      .forEach((entry) => visit(path.join(dir, entry.name), depth + 1));
+  };
+  visit(root, 0);
+  return found;
+}
+
+function findProjectDir(id) {
+  const wanted = String(id || '').trim();
+  if (!wanted) return null;
+  return projectRoots().flatMap((root) => walkProjectDirs(root))
+    .find((dir) => {
+      if (path.basename(dir) === wanted) return true;
+      const config = readJson(path.join(dir, 'project.json'), null);
+      return config && config.id === wanted;
+    }) || null;
+}
+
 function projectDir(id, penName = '') {
   if (penName) return safeJoin(projectRootForPen(penName), id);
-  const found = projectRoots()
-    .map((root) => safeJoin(root, id))
-    .find((dir) => fs.existsSync(path.join(dir, 'project.json')));
+  const found = findProjectDir(id);
   return found || safeJoin(PROJECTS_ROOT, id);
 }
 
@@ -2060,6 +2096,11 @@ function getProject(id, rootHint = '') {
     config.penName = getSettings().author || DEFAULT_PEN_NAME;
     writeJson(configFile, config);
   }
+  const parentSeries = inferredSeriesForProjectDir(dir);
+  if (parentSeries && !config.series && !config.seriesName) {
+    config.series = parentSeries;
+    writeJson(configFile, config);
+  }
   const { chapters, planned } = getChapters(id, config);
   const words = chapters.reduce((sum, chapter) => sum + chapter.words, 0);
   const target = Number(config.targetWords || 90000);
@@ -2125,13 +2166,17 @@ function coverMimeType(file) {
   return 'image/jpeg';
 }
 
+function inferredSeriesForProjectDir(dir) {
+  const parent = path.resolve(path.dirname(dir));
+  const roots = projectRoots();
+  if (roots.some((root) => parent === path.resolve(root))) return '';
+  if (fs.existsSync(path.join(parent, 'project.json'))) return '';
+  return roots.some((root) => parent.startsWith(path.resolve(root) + path.sep)) ? titleFromFolder(parent) : '';
+}
+
 function getProjects() {
-  const cleanProjects = projectRoots().flatMap((dir) => {
-    if (!fs.existsSync(dir)) return [];
-    return fs.readdirSync(dir, { withFileTypes: true })
-      .filter((entry) => entry.isDirectory() && fs.existsSync(path.join(dir, entry.name, 'project.json')))
-      .map((entry) => getProject(entry.name, dir));
-  })
+  const cleanProjects = projectRoots().flatMap((root) => walkProjectDirs(root)
+    .map((dir) => getProject(path.basename(dir), path.dirname(dir))))
     .filter(Boolean)
     .filter((project, index, projects) => projects.findIndex((other) => other.id === project.id) === index)
     .sort((a, b) => a.config.title.localeCompare(b.config.title));
